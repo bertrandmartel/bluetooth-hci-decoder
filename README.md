@@ -44,7 +44,7 @@ IHciFrame * frame = hci_decoder.decode(packet);
 
 ###Architecture
 
-[architecture](https://raw.github.com/akinaru/bluetooth-hci-decoder/master/img/arch.png)
+![architecture](img/arch.png)
 
 ###Decoded item list
 
