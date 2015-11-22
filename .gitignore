@@ -1,0 +1,12 @@
+*.o
+bin/
+build-hcidecoder-*/
+.gradle
+local.properties
+workspace.xml
+android-example/.idea/libraries
+android-example/hci-decoder/.idea/libraries
+build
+libs
+.DS_Store
+obj/

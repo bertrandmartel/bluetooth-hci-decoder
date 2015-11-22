@@ -3,10 +3,8 @@
 
 <i>Last update 22/11/2015</i>
 
-Lightweight Bluetooth HCI decoder library
+Lightweight Bluetooth HCI decoder library parsing individually HCI frames into JSON format
 
-* decode HCI frames individually
-* provide JSON formatted string output
 
 ##Build
 
