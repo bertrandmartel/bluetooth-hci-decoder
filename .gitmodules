@@ -1,0 +1,6 @@
+[submodule "btsnoop-decoder"]
+	path = android-example/hcidecoder/src/main/jni/btsnoop-decoder-lib
+	url = https://github.com/akinaru/btsnoop-decoder.git
+[submodule "android-example/hcidecoder/src/main/jni/btsnoop-decoder"]
+	path = android-example/hcidecoder/src/main/jni/btsnoop-decoder
+	url = https://github.com/akinaru/btsnoop-decoder
