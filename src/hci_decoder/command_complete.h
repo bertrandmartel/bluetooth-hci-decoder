@@ -33,6 +33,7 @@
 
 #include "hci_decoder/IHciEventFrame.h"
 #include "hci_decoder/IHciResponseFrame.h"
+#include "json/json.h"
 
 /* HCI Event 0x0E : Command Complete Event*/
 class CommandComplete : public IHciEventFrame
@@ -47,6 +48,8 @@ public:
 	void print();
 
 	std::string toJson();
+
+	Json::Value toJsonObj();
 
 private:
 

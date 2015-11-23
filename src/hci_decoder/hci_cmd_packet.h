@@ -51,11 +51,14 @@ typedef struct void_cmd : public IHciCommandFrame {
 	}
 
 	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
 
+	Json::Value toJsonObj(){
 		Json::Value output;
 		init(output);
-		return convert_json_to_string(output);
-	}
+		return output;
+	};
 
 } void_cmd_t;
 
@@ -79,19 +82,25 @@ typedef struct vendor_specific_cmd : public IHciCommandFrame {
 	}
 
 	void print(){
-		std::cout << toJson().data() << std::endl;
+		//std::cout << toJson().data() << std::endl;
 	}
 
 	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
+
+	Json::Value toJsonObj(){
 		Json::Value output;
 		init(output);
+		Json::Value parametes_val;
 		Json::Value data_val(Json::arrayValue);
 		for (unsigned int i = 0; i  < parameters.size();i++){
 			data_val.append(parameters[i]);
 		}
-		output["parameters"] = data_val;
-		return convert_json_to_string(output);
-	}
+		parametes_val["parameters_val"] = data_val;
+		output["parameters"] = parametes_val;
+		return output;
+	};
 
 } vendor_specific_cmd_t;
 
@@ -120,16 +129,22 @@ typedef struct le_set_scan_parameters_cmd : public IHciCommandFrame {
 	}
 
 	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
 
+	Json::Value toJsonObj(){
 		Json::Value output;
 		init(output);
-		output["le_scan_type"] = le_scan_type;
-		output["le_scan_interval"] = le_scan_interval;
-		output["le_scan_window"] = le_scan_window;
-		output["own_address_type"] = own_address_type;
-		output["scanning_filter_policy"] = scanning_filter_policy;
 
-		return convert_json_to_string(output);
+		Json::Value parameters;
+		parameters["le_scan_type"] = le_scan_type;
+		parameters["le_scan_interval"] = le_scan_interval;
+		parameters["le_scan_window"] = le_scan_window;
+		parameters["own_address_type"] = own_address_type;
+		parameters["scanning_filter_policy"] = scanning_filter_policy;
+		output["parameters"] = parameters;
+
+		return output;
 	}
 
 } le_set_scan_parameters_cmd_t;
@@ -153,13 +168,17 @@ typedef struct le_set_scan_enable_cmd : public IHciCommandFrame {
 	}
 
 	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
 
+	Json::Value toJsonObj(){
 		Json::Value output;
 		init(output);
-		output["le_scan_enable"] = le_scan_enable;
-		output["filter_duplicates"] = filter_duplicates;
-
-		return convert_json_to_string(output);
+		Json::Value parameters;
+		parameters["le_scan_enable"] = le_scan_enable;
+		parameters["filter_duplicates"] = filter_duplicates;
+		output["parameters"] = parameters;
+		return output;
 	}
 
 } le_set_scan_enable_cmd_t;
@@ -185,17 +204,24 @@ typedef struct le_set_advertising_data_cmd : public IHciCommandFrame {
 	}
 
 	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
 
+	Json::Value toJsonObj(){
 		Json::Value output;
 		init(output);
-		output["advertising_data_length"] = advertising_data_length;
+
+		Json::Value parameters;
+		parameters["advertising_data_length"] = advertising_data_length;
 
 		Json::Value data(Json::arrayValue);
 		for (unsigned int i = 0; i < advertising_data_length;i++){
 			data.append(advertising_data[i]);
 		}
-		output["advertising_data"] = data;
-		return convert_json_to_string(output);
+		parameters["advertising_data"] = data;
+
+		output["parameters"] = parameters;
+		return output;
 	}
 
 } le_set_advertising_data_cmd_t;
@@ -236,19 +262,25 @@ typedef struct le_set_advertising_parameters_cmd : public IHciCommandFrame {
 	}
 
 	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
 
+	Json::Value toJsonObj(){
 		Json::Value output;
 		init(output);
-		output["advertising_interval_min"] = advertising_interval_min;
-		output["advertising_interval_max"] = advertising_interval_max;
-		output["advertising_type"] = advertising_type;
-		output["own_address_type"] = own_address_type;
-		output["peer_address_type"] = peer_address_type;
-		output["peer_address"] = peer_address.toString();
-		output["advertising_channel_map"] = advertising_channel_map;
-		output["advertising_filter_policy"] = advertising_filter_policy;
 
-		return convert_json_to_string(output);
+		Json::Value parameters;
+		parameters["advertising_interval_min"] = advertising_interval_min;
+		parameters["advertising_interval_max"] = advertising_interval_max;
+		parameters["advertising_type"] = advertising_type;
+		parameters["own_address_type"] = own_address_type;
+		parameters["peer_address_type"] = peer_address_type;
+		parameters["peer_address"] = peer_address.toString();
+		parameters["advertising_channel_map"] = advertising_channel_map;
+		parameters["advertising_filter_policy"] = advertising_filter_policy;
+		output["parameters"] = parameters;
+
+		return output;
 	}
 
 } le_set_advertising_parameters_cmd_t;
@@ -276,10 +308,16 @@ typedef struct write_default_link_policy_settings_cmd : public IHciCommandFrame 
 	}
 
 	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
+
+	Json::Value toJsonObj(){
 		Json::Value output;
 		init(output);
-		output["default_link_policy_settings"] = default_link_policy_settings;
-		return convert_json_to_string(output);
+		Json::Value parameters;
+		parameters["default_link_policy_settings"] = default_link_policy_settings;
+		output["parameters"] = parameters;
+		return output;
 	}
 
 } write_default_link_policy_settings_cmd_t;
@@ -307,10 +345,16 @@ typedef struct informational_read_local_extended_features_cmd : public IHciComma
 	}
 
 	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
+
+	Json::Value toJsonObj(){
 		Json::Value output;
 		init(output);
-		output["page_number"] = page_number;
-		return convert_json_to_string(output);
+		Json::Value parameters;
+		parameters["page_number"] = page_number;
+		output["parameters"] = parameters;
+		return output;
 	}
 
 } informational_read_local_extended_features_cmd_t;
@@ -348,10 +392,16 @@ typedef struct ctrl_bsb_write_local_name_cmd : public IHciCommandFrame {
 	}
 
 	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
+
+	Json::Value toJsonObj(){
 		Json::Value output;
 		init(output);
-		output["local_name"] = local_name;
-		return convert_json_to_string(output);
+		Json::Value parameters;
+		parameters["local_name"] = local_name;
+		output["parameters"] = parameters;
+		return output;
 	}
 
 } ctrl_bsb_write_local_name_cmd_t;
@@ -370,9 +420,13 @@ typedef struct ctrl_bsb_read_class_of_device_cmd : public IHciCommandFrame {
 	}
 
 	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
+
+	Json::Value toJsonObj(){
 		Json::Value output;
 		init(output);
-		return convert_json_to_string(output);
+		return output;
 	}
 
 } ctrl_bsb_read_class_of_device_cmd_t;
@@ -394,10 +448,16 @@ typedef struct ctrl_bsb_write_class_of_device_cmd : public IHciCommandFrame {
 	}
 
 	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
+
+	Json::Value toJsonObj(){
 		Json::Value output;
 		init(output);
-		output["device_class"] = device_class;
-		return convert_json_to_string(output);
+		Json::Value parameters;
+		parameters["device_class"] = device_class;
+		output["parameters"] = parameters;
+		return output;
 	}
 
 } ctrl_bsb_write_class_of_device_cmd_t;
@@ -419,10 +479,16 @@ typedef struct ctrl_bsb_write_inquiry_mode_cmd : public IHciCommandFrame {
 	}
 
 	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
+
+	Json::Value toJsonObj(){
 		Json::Value output;
 		init(output);
-		output["inquiry_mode"] = inquiry_mode;
-		return convert_json_to_string(output);
+		Json::Value parameters;
+		parameters["inquiry_mode"] = inquiry_mode;
+		output["parameters"] = parameters;
+		return output;
 	}
 
 } ctrl_bsb_write_inquiry_mode_cmd_t;
@@ -446,11 +512,17 @@ typedef struct ctrl_bsb_write_le_host_support_cmd : public IHciCommandFrame {
 	}
 
 	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
+
+	Json::Value toJsonObj(){
 		Json::Value output;
 		init(output);
-		output["le_supported_host"] = le_supported_host;
-		output["simultaneous_le_host"] = simultaneous_le_host;
-		return convert_json_to_string(output);
+		Json::Value parameters;
+		parameters["le_supported_host"] = le_supported_host;
+		parameters["simultaneous_le_host"] = simultaneous_le_host;
+		output["parameters"] = parameters;
+		return output;
 	}
 
 } ctrl_bsb_write_le_host_support_cmd_t;
@@ -474,11 +546,17 @@ typedef struct ctrl_bsb_write_inquiry_scan_activity_cmd : public IHciCommandFram
 	}
 
 	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
+
+	Json::Value toJsonObj(){
 		Json::Value output;
 		init(output);
-		output["inquiry_scan_interval"] = inquiry_scan_interval;
-		output["inquiry_scan_window"] = inquiry_scan_window;
-		return convert_json_to_string(output);
+		Json::Value parameters;
+		parameters["inquiry_scan_interval"] = inquiry_scan_interval;
+		parameters["inquiry_scan_window"] = inquiry_scan_window;
+		output["parameters"] = parameters;
+		return output;
 	}
 
 } ctrl_bsb_write_inquiry_scan_activity_cmd_t;
@@ -500,10 +578,16 @@ typedef struct ctrl_bsb_write_voice_settings_cmd : public IHciCommandFrame {
 	}
 
 	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
+
+	Json::Value toJsonObj(){
 		Json::Value output;
 		init(output);
-		output["voice_settings"] = voice_settings;
-		return convert_json_to_string(output);
+		Json::Value parameters;
+		parameters["voice_settings"] = voice_settings;
+		output["parameters"] = parameters;
+		return output;
 	}
 
 } ctrl_bsb_write_voice_settings_cmd_t;
@@ -533,15 +617,21 @@ typedef struct ctrl_bsb_write_iac_lap_cmd : public IHciCommandFrame {
 	}
 
 	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
+
+	Json::Value toJsonObj(){
 		Json::Value output;
 		init(output);
-		output["num_current_iac"] = num_current_iac;
+		Json::Value parameters;
+		parameters["num_current_iac"] = num_current_iac;
 		Json::Value laps(Json::arrayValue);
 		for (unsigned int i = 0; i  < num_current_iac;i++){
 			laps.append(lap_iac[i]);
 		}
-		output["lap_iac"] = laps;
-		return convert_json_to_string(output);
+		parameters["lap_iac"] = laps;
+		output["parameters"] = parameters;
+		return output;
 	}
 
 } ctrl_bsb_write_iac_lap_cmd_t;
@@ -563,10 +653,16 @@ typedef struct ctrl_bsb_write_page_scan_type_cmd : public IHciCommandFrame {
 	}
 
 	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
+
+	Json::Value toJsonObj(){
 		Json::Value output;
 		init(output);
-		output["page_scan_type"] = page_scan_type;
-		return convert_json_to_string(output);
+		Json::Value parameters;
+		parameters["page_scan_type"] = page_scan_type;
+		output["parameters"] = parameters;
+		return output;
 	}
 
 } ctrl_bsb_write_page_scan_type_cmd_t;
@@ -588,10 +684,16 @@ typedef struct ctrl_bsb_write_simple_pairing_mode_cmd : public IHciCommandFrame 
 	}
 
 	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
+
+	Json::Value toJsonObj(){
 		Json::Value output;
 		init(output);
-		output["simple_pairing_mode"] = simple_pairing_mode;
-		return convert_json_to_string(output);
+		Json::Value parameters;
+		parameters["simple_pairing_mode"] = simple_pairing_mode;
+		output["parameters"] = parameters;
+		return output;
 	}
 
 } ctrl_bsb_write_simple_pairing_mode_cmd_t;
@@ -617,15 +719,21 @@ typedef struct ctrl_bsb_write_extended_inquiry_response_cmd : public IHciCommand
 	}
 
 	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
+
+	Json::Value toJsonObj(){
 		Json::Value output;
 		init(output);
-		output["fec_required"] = fec_required;
+		Json::Value parameters;
+		parameters["fec_required"] = fec_required;
 		Json::Value extended_inquiry_response_val(Json::arrayValue);
 		for (unsigned int i = 0;i < 240;i++){
 			extended_inquiry_response_val.append(extended_inquiry_response[i]);
 		}
-		output["extended_inquiry_response"] = extended_inquiry_response_val;
-		return convert_json_to_string(output);
+		parameters["extended_inquiry_response"] = extended_inquiry_response_val;
+		output["parameters"] = parameters;
+		return output;
 	}
 
 } ctrl_bsb_write_extended_inquiry_response_cmd_t;
@@ -647,10 +755,16 @@ typedef struct ctrl_bsb_write_scan_enable_cmd : public IHciCommandFrame {
 	}
 
 	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
+
+	Json::Value toJsonObj(){
 		Json::Value output;
 		init(output);
-		output["scan_enable"] = scan_enable;
-		return convert_json_to_string(output);
+		Json::Value parameters;
+		parameters["scan_enable"] = scan_enable;
+		output["parameters"] = parameters;
+		return output;
 	}
 
 } ctrl_bsb_write_scan_enable_cmd_t;
@@ -672,10 +786,16 @@ typedef struct ctrl_bsb_write_inquiry_scan_type_cmd : public IHciCommandFrame {
 	}
 
 	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
+
+	Json::Value toJsonObj(){
 		Json::Value output;
 		init(output);
-		output["scan_type"] = scan_type;
-		return convert_json_to_string(output);
+		Json::Value parameters;
+		parameters["scan_type"] = scan_type;
+		output["parameters"] = parameters;
+		return output;
 	}
 
 } ctrl_bsb_write_inquiry_scan_type_cmd_t;
@@ -700,14 +820,20 @@ typedef struct ctrl_bsb_set_event_mask_cmd : public IHciCommandFrame {
 	}
 
 	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
+
+	Json::Value toJsonObj(){
 		Json::Value output;
 		init(output);
+		Json::Value parameters;
 		Json::Value mask_vals(Json::arrayValue);
 		for (unsigned int i = 0; i  < 8;i++){
 			mask_vals.append(event_mask[i]);
 		}
-		output["event_mask"] = mask_vals;
-		return convert_json_to_string(output);
+		parameters["event_mask"] = mask_vals;
+		output["parameters"] = parameters;
+		return output;
 	}
 
 } ctrl_bsb_set_event_mask_cmd_t;
@@ -729,10 +855,16 @@ typedef struct ctrl_bsb_write_page_timeout_cmd : public IHciCommandFrame {
 	}
 
 	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
+
+	Json::Value toJsonObj(){
 		Json::Value output;
 		init(output);
-		output["page_timeout"] = page_timeout;
-		return convert_json_to_string(output);
+		Json::Value parameters;
+		parameters["page_timeout"] = page_timeout;
+		output["parameters"] = parameters;
+		return output;
 	}
 
 } ctrl_bsb_write_page_timeout_cmd_t;
@@ -760,13 +892,19 @@ typedef struct ctrl_bsb_host_buffer_size_cmd : public IHciCommandFrame {
 	}
 
 	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
+
+	Json::Value toJsonObj(){
 		Json::Value output;
 		init(output);
-		output["host_acl_data_packet_length"] = host_acl_data_packet_length;
-		output["host_synchronous_data_packet_length"] = host_synchronous_data_packet_length;
-		output["host_total_num_acl_data_packet"] = host_total_num_acl_data_packet;
-		output["host_total_num_synchronous_data_packet"] = host_total_num_synchronous_data_packet;
-		return convert_json_to_string(output);
+		Json::Value parameters;
+		parameters["host_acl_data_packet_length"] = host_acl_data_packet_length;
+		parameters["host_synchronous_data_packet_length"] = host_synchronous_data_packet_length;
+		parameters["host_total_num_acl_data_packet"] = host_total_num_acl_data_packet;
+		parameters["host_total_num_synchronous_data_packet"] = host_total_num_synchronous_data_packet;
+		output["parameters"] = parameters;
+		return output;
 	}
 
 } ctrl_bsb_host_buffer_size_cmd_t;
