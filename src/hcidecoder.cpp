@@ -32,6 +32,7 @@
 #include "hci_decoder/hci_cmd_packet.h"
 #include "hci_decoder/hci_event_packet.h"
 #include "hci_decoder/command_complete.h"
+#include "json/json.h"
 
 using namespace std;
 
@@ -50,6 +51,23 @@ HciDecoder::~HciDecoder()
 
 std::vector<IHciFrame*> HciDecoder::getFrameList(){
 	return frame_list;
+}
+
+std::string HciDecoder::toJson(bool beautify){
+
+	Json::Value output(Json::arrayValue);
+	for (std::vector<IHciFrame*>::iterator it = frame_list.begin(); it != frame_list.end();++it){
+		output.append((*it)->toJsonObj());
+	}
+
+	if (!beautify){
+		Json::StreamWriterBuilder builder;
+		builder.settings_["indentation"] = "";
+		return Json::writeString(builder, output);
+	}
+	else{
+		return output.toStyledString();
+	}
 }
 
 std::vector<IHciFrame*> HciDecoder::decode(std::vector<char> data){

@@ -47,6 +47,8 @@ public:
 
 	std::vector<IHciFrame*> getFrameList();
 
+	std::string toJson(bool beautify);
+
 private:
 	
 	/*list of frame decoded with this decoder*/
