@@ -32,6 +32,7 @@
 #define IHCIFRAME_H
 
 #include "hci_decoder/hci_global.h"
+#include "json/json.h"
 
 /**
  * @brief The IHciFrame class
@@ -49,6 +50,15 @@ public:
 	 */
 	virtual std::string toJson(){
 		return "{}";
+	};
+
+	/**
+	 * @brief toStyledJson
+	 *      convert frame information to beautiful json format
+	 * @return
+	 */
+	virtual Json::Value toJsonObj(){
+		return Json::Value(Json::arrayValue);
 	};
 
 	/**

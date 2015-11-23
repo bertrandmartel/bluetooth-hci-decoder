@@ -34,6 +34,7 @@
 #include "btsnoopmonitor.h"
 #include <signal.h>
 #include "btsnoop/btsnooptask.h"
+#include "hci_decoder/hcidecoder.h"
 
 using namespace std;
 
@@ -67,11 +68,14 @@ int main(int argc, char *argv[])
 		hci_decoder.decode(packet.getPacketData());
 	}
 
+	/*
 	std::vector<IHciFrame*> frame_list = hci_decoder.getFrameList();
 
 	for (unsigned int i = 0; i<  frame_list.size();i++){
 		frame_list.at(i)->print();
-	}
+	}*/
+
+	cout << hci_decoder.toJson(true) << endl;
 
 	return 0;
 }
