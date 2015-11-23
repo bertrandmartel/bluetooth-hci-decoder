@@ -32,8 +32,13 @@
 
 #include <android/log.h> 
 #include <jni.h>
+#include "btsnoop/btsnooptask.h"
+#include "hci_decoder/hcidecoder.h"
 
 #ifdef __cplusplus
+
+using namespace std;
+
 extern "C" {
 #endif
 
@@ -44,9 +49,32 @@ JNIEXPORT jstring JNICALL Java_fr_bmartel_android_hcidecoder_MainActivity_decode
 
 	__android_log_print(ANDROID_LOG_VERBOSE,"hcidecoder","decoding btsnoop file : %s\n",snoop_file_str);
 
+	std::string recordFile("/sdcard/btsnoop_hci.log");
+	BtSnoopTask decoder(recordFile);
+
+	decoder.decode_file();
+
+	//decoder.getFileInfo().printInfo();
+
+	HciDecoder hci_decoder;
+
+	for (unsigned int i = 0; i  < decoder.getPacketDataRecords().size();i++){
+
+		BtSnoopPacket packet = decoder.getPacketDataRecords()[i];
+		hci_decoder.decode(packet.getPacketData());
+	}
+
+	/*
+	std::vector<IHciFrame*> frame_list = hci_decoder.getFrameList();
+
+	for (unsigned int i = 0; i<  frame_list.size();i++){
+		__android_log_print(ANDROID_LOG_VERBOSE,"hcidecoder","%s\n",frame_list.at(i)->toJson().data());
+	}
+	*/
+
 	env->ReleaseStringUTFChars(snoop_file, snoop_file_str);
 
-	return env->NewStringUTF("");
+	return env->NewStringUTF(hci_decoder.toJson(true).data());
 }
 
 #ifdef __cplusplus

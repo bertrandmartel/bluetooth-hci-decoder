@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -9,12 +11,23 @@
         android:layout_height="wrap_content"
         android:text="Decode HCI frames" />
 
-    <TextView
-        android:id="@+id/hci_json_txt"
+    <Button
+        android:id="@+id/clear_btn"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/hci_decode_btn"
-        android:layout_marginTop="10dp"
-        android:text="" />
+        android:text="Clear" />
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/clear_btn">
+
+        <TextView
+            android:id="@+id/hci_json_txt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:text="" />
+    </ScrollView>
 </RelativeLayout>

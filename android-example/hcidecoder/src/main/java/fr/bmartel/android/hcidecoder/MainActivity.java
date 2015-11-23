@@ -30,6 +30,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 /**
  * Test activity for using hcidecoder library from Android
  *
@@ -39,10 +44,34 @@ public class MainActivity extends Activity {
 
     private String TAG = MainActivity.this.getClass().getName();
 
+    private final static String HCI_FILE_PATH = "/sdcard/btsnoop_hci.log";
+
     public native String decodeHci(String snoopFile);
 
     static {
         System.loadLibrary("hciwrapper");
+    }
+
+    public void moveRawFile(int fileId, String fileName) {
+        try {
+            InputStream in = getApplicationContext().getResources().openRawResource(fileId);
+            FileOutputStream out = new FileOutputStream(fileName);
+            byte[] buff = new byte[1024];
+            int read = 0;
+
+            try {
+                while ((read = in.read(buff)) > 0) {
+                    out.write(buff, 0, read);
+                }
+            } finally {
+                in.close();
+                out.close();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -50,7 +79,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.i(TAG, "MainActivity");
+        moveRawFile(R.raw.btsnoophci, HCI_FILE_PATH);
 
         Button button = (Button) findViewById(R.id.hci_decode_btn);
 
@@ -60,12 +89,26 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-                final String response = decodeHci("test");
+                final String response = decodeHci(HCI_FILE_PATH);
 
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         text.setText(response);
+                    }
+                });
+            }
+        });
+
+        Button clear_button = (Button) findViewById(R.id.clear_btn);
+
+        clear_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        text.setText("");
                     }
                 });
             }
