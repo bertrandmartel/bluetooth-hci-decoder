@@ -5,7 +5,7 @@
 Lightweight Bluetooth HCI decoder library parsing individually HCI frames into JSON format
 
 
-##Build
+##Setup & Build
 
 ```
 git submodule init
