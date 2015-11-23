@@ -188,25 +188,29 @@ typedef struct le_meta_advertising_report_event : public IHciEventFrame {
 	}
 
 	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
+
+	Json::Value toJsonObj(){
 
 		Json::Value output;
-
+		Json::Value parameters;
 		Json::Value event_code;
 		event_code["code"] = HCI_EVENT_LE_ADVERTISING_REPORT;
 		event_code["value"] = LE_SUBEVENT_STRING_ENUM.at(HCI_EVENT_LE_ADVERTISING_REPORT);
 		output["subevent_code"] = event_code;
 
 		init(output);
-		output["num_reports"] = num_reports;
+		parameters["num_reports"] = num_reports;
 
 		Json::Value report_list(Json::arrayValue);
 		unsigned int i = 0;
 		for (i = 0; i  < ad_report_items.size();i++){
 			report_list.append(ad_report_items[i]->toJson());
 		}
-		output["reports"] =  report_list;
-
-		return convert_json_to_string(output);
+		parameters["reports"] =  report_list;
+		output["parameters"] = parameters;
+		return output;
 	}
 
 } le_meta_advertising_report_event_t;
@@ -254,23 +258,28 @@ typedef struct le_meta_connection_complete_event : public IHciEventFrame {
 	}
 
 	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
+
+	Json::Value toJsonObj(){
 
 		Json::Value output;
 		Json::Value event_code;
+		Json::Value parameters;
 		event_code["code"] = HCI_EVENT_LE_CONNECTION_COMPLETE;
 		event_code["value"] = LE_SUBEVENT_STRING_ENUM.at(HCI_EVENT_LE_CONNECTION_COMPLETE);
 		output["subevent_code"] = event_code;
 		init(output);
-		output["status"] =  status;
-		output["connection_handle"] =  connection_handle;
-		output["peer_address_type"] =  peer_address_type;
-		output["peer_address"] =  peer_address.toString();
-		output["conn_interval"] =  conn_interval;
-		output["conn_latency"] =  conn_latency;
-		output["supervision_timeout"] =  supervision_timeout;
-		output["master_clock_accuracy"] =  master_clock_accuracy;
-
-		return convert_json_to_string(output);
+		parameters["status"] =  status;
+		parameters["connection_handle"] =  connection_handle;
+		parameters["peer_address_type"] =  peer_address_type;
+		parameters["peer_address"] =  peer_address.toString();
+		parameters["conn_interval"] =  conn_interval;
+		parameters["conn_latency"] =  conn_latency;
+		parameters["supervision_timeout"] =  supervision_timeout;
+		parameters["master_clock_accuracy"] =  master_clock_accuracy;
+		output["parameters"] = parameters;
+		return output;
 	}
 
 } le_meta_connection_complete_event_t;

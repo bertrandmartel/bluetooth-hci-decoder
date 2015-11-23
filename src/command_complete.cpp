@@ -343,11 +343,12 @@ void CommandComplete::print(){
 
 }
 
-std::string CommandComplete::toJson(){
+Json::Value CommandComplete::toJsonObj(){
 
 	Json::Value output;
 	init(output);
-	output["num_hci_command_packets"] = num_hci_command_packets;
+	Json::Value parameters;
+	parameters["num_hci_command_packets"] = num_hci_command_packets;
 
 	Json::Value command_opcode_ret;
 	Json::Value ogf_code;
@@ -407,7 +408,7 @@ std::string CommandComplete::toJson(){
 		command_opcode_ret["ocf"] = ocf_code;
 	}
 	command_opcode_ret["ogf"] = ogf_code;
-	output["command_opcode"] = command_opcode_ret;
+	parameters["command_opcode"] = command_opcode_ret;
 
 	Json::Value return_parameters_data;
 
@@ -418,7 +419,12 @@ std::string CommandComplete::toJson(){
 		return_parameters_data["values"] = Json::Value(Json::arrayValue);
 	}
 
-	output["return_parameters"] =  return_parameters_data;
+	parameters["return_parameters"] =  return_parameters_data;
 
-	return convert_json_to_string(output);
+	output["parameters"] = parameters;
+	return output;
+}
+
+std::string CommandComplete::toJson(){
+	return convert_json_to_string(toJsonObj());
 }
