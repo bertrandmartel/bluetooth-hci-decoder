@@ -70,7 +70,9 @@ std::string HciDecoder::toJson(bool beautify){
 	}
 }
 
-std::vector<IHciFrame*> HciDecoder::decode(std::vector<char> data){
+IHciFrame* HciDecoder::decode(std::vector<char> data){
+
+	IHciFrame * frame = 0;
 
 	switch (data[0]){
 
@@ -92,7 +94,7 @@ std::vector<IHciFrame*> HciDecoder::decode(std::vector<char> data){
 					{
 						case HCI_CMD_OCF_LINK_POLICY_WRITE_DEFAULT_LINK_POLICY_SETTINGS_COMMAND:
 						{
-							frame_list.push_back(new write_default_link_policy_settings_cmd_t(data));
+							frame = new write_default_link_policy_settings_cmd_t(data);
 							break;
 						}
 						default:
@@ -108,147 +110,147 @@ std::vector<IHciFrame*> HciDecoder::decode(std::vector<char> data){
 					{
 						case HCI_CMD_OCF_CTRL_BSB_RESET_COMMAND:
 						{
-							frame_list.push_back(new void_cmd_t(data,HCI_CMD_OGF_CONTROLLER_BASEBAND_COMMANDS,HCI_CMD_OCF_CTRL_BSB_RESET_COMMAND));
+							frame = new void_cmd_t(data,HCI_CMD_OGF_CONTROLLER_BASEBAND_COMMANDS,HCI_CMD_OCF_CTRL_BSB_RESET_COMMAND);
 							break;
 						}
 						case HCI_CMD_OCF_CTRL_BSB_WRITE_LOCAL_NAME_COMMAND:
 						{
-							frame_list.push_back(new ctrl_bsb_write_local_name_cmd_t(data));
+							frame = new ctrl_bsb_write_local_name_cmd_t(data);
 							break;
 						}
 						case HCI_CMD_OCF_CTRL_BSB_READ_LOCAL_NAME_COMMAND:
 						{
-							frame_list.push_back(new void_cmd_t(data,HCI_CMD_OGF_CONTROLLER_BASEBAND_COMMANDS,HCI_CMD_OCF_CTRL_BSB_READ_LOCAL_NAME_COMMAND));
+							frame = new void_cmd_t(data,HCI_CMD_OGF_CONTROLLER_BASEBAND_COMMANDS,HCI_CMD_OCF_CTRL_BSB_READ_LOCAL_NAME_COMMAND);
 							break;
 						}
 						case HCI_CMD_OCF_CTRL_BSB_READ_CLASS_OF_DEVICE_COMMAND:
 						{
-							frame_list.push_back(new ctrl_bsb_read_class_of_device_cmd_t(data));
+							frame = new ctrl_bsb_read_class_of_device_cmd_t(data);
 							break;
 						}
 						case HCI_CMD_OCF_CTRL_BSB_WRITE_CLASS_OF_DEVICE_COMMAND:
 						{
-							frame_list.push_back(new ctrl_bsb_write_class_of_device_cmd_t(data));
+							frame = new ctrl_bsb_write_class_of_device_cmd_t(data);
 							break;
 						}
 						case HCI_CMD_OCF_CTRL_BSB_READ_INQUIRY_MODE_COMMAND:
 						{
-							frame_list.push_back(new void_cmd_t(data,HCI_CMD_OGF_CONTROLLER_BASEBAND_COMMANDS,HCI_CMD_OCF_CTRL_BSB_READ_INQUIRY_MODE_COMMAND));
+							frame = new void_cmd_t(data,HCI_CMD_OGF_CONTROLLER_BASEBAND_COMMANDS,HCI_CMD_OCF_CTRL_BSB_READ_INQUIRY_MODE_COMMAND);
 							break;
 						}
 						case HCI_CMD_OCF_CTRL_BSB_WRITE_INQUIRY_MODE_COMMAND:
 						{
-							frame_list.push_back(new ctrl_bsb_write_inquiry_mode_cmd_t(data));
+							frame = new ctrl_bsb_write_inquiry_mode_cmd_t(data);
 							break;
 						}
 						case HCI_CMD_OCF_CTRL_BSB_READ_LE_HOST_SUPPORT_COMMAND:
 						{
-							frame_list.push_back(new void_cmd_t(data,HCI_CMD_OGF_CONTROLLER_BASEBAND_COMMANDS,HCI_CMD_OCF_CTRL_BSB_READ_LE_HOST_SUPPORT_COMMAND));
+							frame = new void_cmd_t(data,HCI_CMD_OGF_CONTROLLER_BASEBAND_COMMANDS,HCI_CMD_OCF_CTRL_BSB_READ_LE_HOST_SUPPORT_COMMAND);
 							break;
 						}
 						case HCI_CMD_OCF_CTRL_BSB_WRITE_LE_HOST_SUPPORT_COMMAND:
 						{
-							frame_list.push_back(new ctrl_bsb_write_le_host_support_cmd_t(data));
+							frame = new ctrl_bsb_write_le_host_support_cmd_t(data);
 							break;
 						}
 						case HCI_CMD_OCF_CTRL_BSB_WRITE_INQUIRY_SCAN_ACTIVITY_COMMAND:
 						{
-							frame_list.push_back(new ctrl_bsb_write_inquiry_scan_activity_cmd_t(data));
+							frame = new ctrl_bsb_write_inquiry_scan_activity_cmd_t(data);
 							break;
 						}
 						case HCI_CMD_OCF_CTRL_BSB_READ_INQUIRY_SCAN_ACTIVITY_COMMAND:
 						{
-							frame_list.push_back(new void_cmd_t(data,HCI_CMD_OGF_CONTROLLER_BASEBAND_COMMANDS,HCI_CMD_OCF_CTRL_BSB_READ_INQUIRY_SCAN_ACTIVITY_COMMAND));
+							frame = new void_cmd_t(data,HCI_CMD_OGF_CONTROLLER_BASEBAND_COMMANDS,HCI_CMD_OCF_CTRL_BSB_READ_INQUIRY_SCAN_ACTIVITY_COMMAND);
 							break;
 						}
 						case HCI_CMD_OCF_CTRL_BSB_READ_VOICE_SETTING_COMMAND:
 						{
-							frame_list.push_back(new void_cmd_t(data,HCI_CMD_OGF_CONTROLLER_BASEBAND_COMMANDS,HCI_CMD_OCF_CTRL_BSB_READ_VOICE_SETTING_COMMAND));
+							frame = new void_cmd_t(data,HCI_CMD_OGF_CONTROLLER_BASEBAND_COMMANDS,HCI_CMD_OCF_CTRL_BSB_READ_VOICE_SETTING_COMMAND);
 							break;
 						}
 						case HCI_CMD_OCF_CTRL_BSB_WRITE_VOICE_SETTING_COMMAND:
 						{
-							frame_list.push_back(new ctrl_bsb_write_voice_settings_cmd_t(data));
+							frame = new ctrl_bsb_write_voice_settings_cmd_t(data);
 							break;
 						}
 						case HCI_CMD_OCF_CTRL_BSB_READ_CURRENT_IAC_LAP_COMMAND:
 						{
-							frame_list.push_back(new void_cmd_t(data,HCI_CMD_OGF_CONTROLLER_BASEBAND_COMMANDS,HCI_CMD_OCF_CTRL_BSB_READ_CURRENT_IAC_LAP_COMMAND));
+							frame = new void_cmd_t(data,HCI_CMD_OGF_CONTROLLER_BASEBAND_COMMANDS,HCI_CMD_OCF_CTRL_BSB_READ_CURRENT_IAC_LAP_COMMAND);
 							break;
 						}
 						case HCI_CMD_OCF_CTRL_BSB_WRITE_CURRENT_IAC_LAP_COMMAND:
 						{
-							frame_list.push_back(new ctrl_bsb_write_iac_lap_cmd_t(data));
+							frame = new ctrl_bsb_write_iac_lap_cmd_t(data);
 							break;
 						}
 						case HCI_CMD_OCF_CTRL_BSB_READ_PAGE_SCAN_TYPE_COMMAND:
 						{
-							frame_list.push_back(new void_cmd_t(data,HCI_CMD_OGF_CONTROLLER_BASEBAND_COMMANDS,HCI_CMD_OCF_CTRL_BSB_READ_PAGE_SCAN_TYPE_COMMAND));
+							frame = new void_cmd_t(data,HCI_CMD_OGF_CONTROLLER_BASEBAND_COMMANDS,HCI_CMD_OCF_CTRL_BSB_READ_PAGE_SCAN_TYPE_COMMAND);
 							break;
 						}
 						case HCI_CMD_OCF_CTRL_BSB_WRITE_PAGE_SCAN_TYPE_COMMAND:
 						{
-							frame_list.push_back(new ctrl_bsb_write_page_scan_type_cmd_t(data));
+							frame = new ctrl_bsb_write_page_scan_type_cmd_t(data);
 							break;
 						}
 						case HCI_CMD_OCF_CTRL_BSB_READ_SIMPLE_PAIRING_MODE_COMMAND:
 						{
-							frame_list.push_back(new void_cmd_t(data,HCI_CMD_OGF_CONTROLLER_BASEBAND_COMMANDS,HCI_CMD_OCF_CTRL_BSB_READ_SIMPLE_PAIRING_MODE_COMMAND));
+							frame = new void_cmd_t(data,HCI_CMD_OGF_CONTROLLER_BASEBAND_COMMANDS,HCI_CMD_OCF_CTRL_BSB_READ_SIMPLE_PAIRING_MODE_COMMAND);
 							break;
 						}
 						case HCI_CMD_OCF_CTRL_BSB_WRITE_SIMPLE_PAIRING_MODE_COMMAND:
 						{
-							frame_list.push_back(new ctrl_bsb_write_simple_pairing_mode_cmd_t(data));
+							frame = new ctrl_bsb_write_simple_pairing_mode_cmd_t(data);
 							break;
 						}
 						case HCI_CMD_OCF_CTRL_BSB_READ_EXTENDED_INQUIRY_RESPONSE_COMMAND:
 						{
-							frame_list.push_back(new void_cmd_t(data,HCI_CMD_OGF_CONTROLLER_BASEBAND_COMMANDS,HCI_CMD_OCF_CTRL_BSB_READ_EXTENDED_INQUIRY_RESPONSE_COMMAND));
+							frame = new void_cmd_t(data,HCI_CMD_OGF_CONTROLLER_BASEBAND_COMMANDS,HCI_CMD_OCF_CTRL_BSB_READ_EXTENDED_INQUIRY_RESPONSE_COMMAND);
 							break;
 						}
 						case HCI_CMD_OCF_CTRL_BSB_WRITE_EXTENDED_INQUIRY_RESPONSE_COMMAND:
 						{
-							frame_list.push_back(new ctrl_bsb_write_extended_inquiry_response_cmd_t(data));
+							frame = new ctrl_bsb_write_extended_inquiry_response_cmd_t(data);
 							break;
 						}
 						case HCI_CMD_OCF_CTRL_BSB_READ_SCAN_ENABLE_COMMAND:
 						{
-							frame_list.push_back(new void_cmd_t(data,HCI_CMD_OGF_CONTROLLER_BASEBAND_COMMANDS,HCI_CMD_OCF_CTRL_BSB_READ_SCAN_ENABLE_COMMAND));
+							frame = new void_cmd_t(data,HCI_CMD_OGF_CONTROLLER_BASEBAND_COMMANDS,HCI_CMD_OCF_CTRL_BSB_READ_SCAN_ENABLE_COMMAND);
 							break;
 						}
 						case HCI_CMD_OCF_CTRL_BSB_WRITE_SCAN_ENABLE_COMMAND:
 						{
-							frame_list.push_back(new ctrl_bsb_write_scan_enable_cmd_t(data));
+							frame = new ctrl_bsb_write_scan_enable_cmd_t(data);
 							break;
 						}
 						case HCI_CMD_OCF_CTRL_BSB_READ_INQUIRY_SCAN_TYPE_COMMAND:
 						{
-							frame_list.push_back(new void_cmd_t(data,HCI_CMD_OGF_CONTROLLER_BASEBAND_COMMANDS,HCI_CMD_OCF_CTRL_BSB_READ_INQUIRY_SCAN_TYPE_COMMAND));
+							frame = new void_cmd_t(data,HCI_CMD_OGF_CONTROLLER_BASEBAND_COMMANDS,HCI_CMD_OCF_CTRL_BSB_READ_INQUIRY_SCAN_TYPE_COMMAND);
 							break;
 						}
 						case HCI_CMD_OCF_CTRL_BSB_WRITE_INQUIRY_SCAN_TYPE_COMMAND:
 						{
-							frame_list.push_back(new ctrl_bsb_write_inquiry_scan_type_cmd_t(data));
+							frame = new ctrl_bsb_write_inquiry_scan_type_cmd_t(data);
 							break;
 						}
 						case HCI_CMD_OCF_CTRL_BSB_SET_EVENT_MASK_COMMAND:
 						{
-							frame_list.push_back(new ctrl_bsb_set_event_mask_cmd_t(data));
+							frame = new ctrl_bsb_set_event_mask_cmd_t(data);
 							break;
 						}
 						case HCI_CMD_OCF_CTRL_BSB_READ_PAGE_TIMEOUT_COMMAND:
 						{
-							frame_list.push_back(new void_cmd_t(data,HCI_CMD_OGF_CONTROLLER_BASEBAND_COMMANDS,HCI_CMD_OCF_CTRL_BSB_READ_PAGE_TIMEOUT_COMMAND));
+							frame = new void_cmd_t(data,HCI_CMD_OGF_CONTROLLER_BASEBAND_COMMANDS,HCI_CMD_OCF_CTRL_BSB_READ_PAGE_TIMEOUT_COMMAND);
 							break;
 						}
 						case HCI_CMD_OCF_CTRL_BSB_WRITE_PAGE_TIMEOUT_COMMAND:
 						{
-							frame_list.push_back(new ctrl_bsb_write_page_timeout_cmd_t(data));
+							frame = new ctrl_bsb_write_page_timeout_cmd_t(data);
 							break;
 						}
 						case HCI_CMD_OCF_CTRL_BSB_HOST_BUFFER_SIZE_COMMAND:
 						{
-							frame_list.push_back(new ctrl_bsb_host_buffer_size_cmd_t(data));
+							frame = new ctrl_bsb_host_buffer_size_cmd_t(data);
 							break;
 						}
 						default:
@@ -263,27 +265,27 @@ std::vector<IHciFrame*> HciDecoder::decode(std::vector<char> data){
 					switch (ocf){
 						case HCI_CMD_OCF_INFORMATIONAL_READ_LOCAL_SUPPORTED_COMMAND:
 						{
-							frame_list.push_back(new void_cmd_t(data,HCI_CMD_OGF_INFORMATIONAL_PARAMETERS,HCI_CMD_OCF_INFORMATIONAL_READ_LOCAL_SUPPORTED_COMMAND));
+							frame = new void_cmd_t(data,HCI_CMD_OGF_INFORMATIONAL_PARAMETERS,HCI_CMD_OCF_INFORMATIONAL_READ_LOCAL_SUPPORTED_COMMAND);
 							break;
 						}
 						case HCI_CMD_OCF_INFORMATIONAL_READ_BUFFER_SIZE_COMMAND:
 						{
-							frame_list.push_back(new void_cmd_t(data,HCI_CMD_OGF_INFORMATIONAL_PARAMETERS,HCI_CMD_OCF_INFORMATIONAL_READ_BUFFER_SIZE_COMMAND));
+							frame = new void_cmd_t(data,HCI_CMD_OGF_INFORMATIONAL_PARAMETERS,HCI_CMD_OCF_INFORMATIONAL_READ_BUFFER_SIZE_COMMAND);
 							break;
 						}
 						case HCI_CMD_OCF_INFORMATIONAL_READ_BD_ADDR:
 						{
-							frame_list.push_back(new void_cmd_t(data,HCI_CMD_OGF_INFORMATIONAL_PARAMETERS,HCI_CMD_OCF_INFORMATIONAL_READ_BD_ADDR));
+							frame = new void_cmd_t(data,HCI_CMD_OGF_INFORMATIONAL_PARAMETERS,HCI_CMD_OCF_INFORMATIONAL_READ_BD_ADDR);
 							break;
 						}
 						case HCI_CMD_OCF_INFORMATIONAL_READ_LOCAL_VERSION_INFORMATION_COMMAND:
 						{
-							frame_list.push_back(new void_cmd_t(data,HCI_CMD_OGF_INFORMATIONAL_PARAMETERS,HCI_CMD_OCF_INFORMATIONAL_READ_LOCAL_VERSION_INFORMATION_COMMAND));
+							frame = new void_cmd_t(data,HCI_CMD_OGF_INFORMATIONAL_PARAMETERS,HCI_CMD_OCF_INFORMATIONAL_READ_LOCAL_VERSION_INFORMATION_COMMAND);
 							break;
 						}
 						case HCI_CMD_OCF_INFORMATIONAL_READ_LOCAL_EXTENDED_FEATURES_COMMAND:
 						{
-							frame_list.push_back(new informational_read_local_extended_features_cmd_t(data));
+							frame = new informational_read_local_extended_features_cmd_t(data);
 							break;
 						}
 						default:
@@ -309,42 +311,42 @@ std::vector<IHciFrame*> HciDecoder::decode(std::vector<char> data){
 
 						case HCI_CMD_OCF_LE_SET_SCAN_PARAMETERS_COMMAND	:
 						{
-							frame_list.push_back(new le_set_scan_parameters_cmd_t(data));
+							frame = new le_set_scan_parameters_cmd_t(data);
 							break;
 						}
 						case HCI_CMD_OCF_LE_SET_SCAN_ENABLE_COMMAND:
 						{
-							frame_list.push_back(new le_set_scan_enable_cmd_t(data));
+							frame = new le_set_scan_enable_cmd_t(data);
 							break;
 						}
 						case HCI_CMD_OCF_LE_SET_ADVERTISING_PARAMETERS_COMMAND:
 						{
-							frame_list.push_back(new le_set_advertising_parameters_cmd_t(data));
+							frame = new le_set_advertising_parameters_cmd_t(data);
 							break;
 						}
 						case HCI_CMD_OCF_LE_CLEAR_WHITE_LIST_COMMAND:
 						{
-							frame_list.push_back(new void_cmd_t(data,HCI_CMD_OGF_LE_CONTROLLER_COMMANDS,HCI_CMD_OCF_LE_CLEAR_WHITE_LIST_COMMAND));
+							frame = new void_cmd_t(data,HCI_CMD_OGF_LE_CONTROLLER_COMMANDS,HCI_CMD_OCF_LE_CLEAR_WHITE_LIST_COMMAND);
 							break;
 						}
 						case HCI_CMD_OCF_LE_READ_WHITE_LIST_SIZE_COMMAND:
 						{
-							frame_list.push_back(new void_cmd_t(data,HCI_CMD_OGF_LE_CONTROLLER_COMMANDS,HCI_CMD_OCF_LE_READ_WHITE_LIST_SIZE_COMMAND));
+							frame = new void_cmd_t(data,HCI_CMD_OGF_LE_CONTROLLER_COMMANDS,HCI_CMD_OCF_LE_READ_WHITE_LIST_SIZE_COMMAND);
 							break;
 						}
 						case HCI_CMD_OCF_LE_SET_ADVERTISING_DATA_COMMAND:
 						{
-							frame_list.push_back(new le_set_advertising_data_cmd_t(data));
+							frame = new le_set_advertising_data_cmd_t(data);
 							break;
 						}
 						case HCI_CMD_OCF_LE_READ_BUFFER_SIZE_COMMAND:
 						{
-							frame_list.push_back(new void_cmd_t(data,HCI_CMD_OGF_LE_CONTROLLER_COMMANDS,HCI_CMD_OCF_LE_READ_BUFFER_SIZE_COMMAND));
+							frame = new void_cmd_t(data,HCI_CMD_OGF_LE_CONTROLLER_COMMANDS,HCI_CMD_OCF_LE_READ_BUFFER_SIZE_COMMAND);
 							break;
 						}
 						case HCI_CMD_OCF_LE_READ_LOCAL_SUPPORTED_FEATURES_COMMAND:
 						{
-							frame_list.push_back(new void_cmd_t(data,HCI_CMD_OGF_LE_CONTROLLER_COMMANDS,HCI_CMD_OCF_LE_READ_LOCAL_SUPPORTED_FEATURES_COMMAND));
+							frame = new void_cmd_t(data,HCI_CMD_OGF_LE_CONTROLLER_COMMANDS,HCI_CMD_OCF_LE_READ_LOCAL_SUPPORTED_FEATURES_COMMAND);
 							break;
 						}
 						default:
@@ -356,7 +358,7 @@ std::vector<IHciFrame*> HciDecoder::decode(std::vector<char> data){
 				}
 				case HCI_CMD_OGF_VENDOR_SPECIFIC: 
 				{
-					frame_list.push_back(new vendor_specific_cmd_t(data));
+					frame = new vendor_specific_cmd_t(data);
 					break;
 				}
 				default:
@@ -382,7 +384,7 @@ std::vector<IHciFrame*> HciDecoder::decode(std::vector<char> data){
 
 				case HCI_EVENT_COMMAND_COMPLETE:
 				{
-					frame_list.push_back(new CommandComplete(data));
+					frame = new CommandComplete(data);
 					break;
 				}
 				case HCI_EVENT_LE_META:
@@ -392,12 +394,12 @@ std::vector<IHciFrame*> HciDecoder::decode(std::vector<char> data){
 					switch (event.subevent_code){
 						case HCI_EVENT_LE_CONNECTION_COMPLETE:
 						{
-							frame_list.push_back(new le_meta_connection_complete_event(data));
+							frame = new le_meta_connection_complete_event(data);
 							break;
 						}
 						case HCI_EVENT_LE_ADVERTISING_REPORT:
 						{
-							frame_list.push_back(new le_meta_advertising_report_event(data));
+							frame = new le_meta_advertising_report_event(data);
 							break;
 						}
 						case HCI_EVENT_LE_CONNECTION_UPDATE_COMPLETE:
@@ -455,5 +457,9 @@ std::vector<IHciFrame*> HciDecoder::decode(std::vector<char> data){
 		}
 	}
 
-	return frame_list;
+	if (frame!=0){
+		frame_list.push_back(frame);
+	}
+
+	return frame;
 }

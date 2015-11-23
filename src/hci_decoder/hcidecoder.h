@@ -43,7 +43,7 @@ public:
 
 	~HciDecoder();
 
-	std::vector<IHciFrame*> decode(std::vector<char> data);
+	IHciFrame* decode(std::vector<char> data);
 
 	std::vector<IHciFrame*> getFrameList();
 
