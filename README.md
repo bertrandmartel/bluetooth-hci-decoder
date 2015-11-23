@@ -1,7 +1,6 @@
 # C++ Bluetooth HCI decoder library #
 
 
-<i>Last update 22/11/2015</i>
 
 Lightweight Bluetooth HCI decoder library parsing individually HCI frames into JSON format
 
@@ -18,7 +17,7 @@ Library release under `build-hcidecoder-X.X` directory.
 
 ##Test
 
-A test small is provided extracting HCI frames from a btsnoop file decoded with https://github.com/akinaru/btsnoop-decoder
+A small test is provided extracting HCI frames from a btsnoop file decoded with https://github.com/akinaru/btsnoop-decoder
 
 Syntax : ``./hci-decoder-test <snoop_file>``
 
@@ -45,12 +44,9 @@ IHciFrame * frame = hci_decoder.decode(packet);
 
 ![architecture](img/arch.png)
 
-###Decoded item list
+###List of HCI frames
 
-A `IHciFrame` is returned from featuring following method :
-
-
-You can retrieve full list of `IHciFrame` decoded with a single `HciDecoder` with `std::vector<IHciFrame*> getFrameList()` method
+You can retrieve full list of `IHciFrame` decoded with a single `HciDecoder` with `std::vector<IHciFrame*> getFrameList()` method : 
 
 ```
 std::vector<IHciFrame*> frame_list = hci_decoder.getFrameList();
@@ -60,9 +56,9 @@ for (unsigned int i = 0; i  < frame_list.size();i++){
 }
 ```
 
-###Full item list in Json array
+###Complete HCI frame list in JSON array
 
-To convert all HCI frames item previously decoded to json array format, use `std::string toJson(bool beautify)` :
+To convert all HCI frames previously decoded to json array format, use `std::string toJson(bool beautify)` :
 
 ```
 std::string json_array_list = hci_decoder.toJson(false);
@@ -122,7 +118,7 @@ Common fields for all HCI Event frames:
 			<td rowspan="2">event_code</td>
 			<td>code</td>
 			<td>int</td>
-			<td>event numeric value</td>
+			<td>event numeric value</td>
 	</tr>
 	<tr>
 			<td>value</td>
