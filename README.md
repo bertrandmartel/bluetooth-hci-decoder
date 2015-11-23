@@ -17,7 +17,7 @@ Library release under `build-hcidecoder-X.X` directory.
 
 ##Test
 
-A small test is provided extracting HCI frames from a btsnoop file decoded with https://github.com/akinaru/btsnoop-decoder
+A small test program is provided extracting HCI frames from a btsnoop file decoded with https://github.com/akinaru/btsnoop-decoder
 
 Syntax : ``./hci-decoder-test <snoop_file>``
 
