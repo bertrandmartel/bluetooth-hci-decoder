@@ -102,40 +102,61 @@ protected:
 			ocf_code["code"] = ocf;
 			switch (ogf)
 			{
-				case HCI_CMD_OGF_LINK_CONTROl_COMMANDS:
+				case HCI_CMD_OGF_LINK_CONTROL_COMMANDS:
 				{
+					ogf_code["value"] = COMMAND_OGF_STRING_ENUM.at(HCI_CMD_OGF_LINK_CONTROL_COMMANDS);
+					if (COMMAND_OCF_LINK_CONTROL_STRING_ENUM.count(ocf))
+						ocf_code["value"] = COMMAND_OCF_LINK_CONTROL_STRING_ENUM.at(ocf);
 					break;
 				}
 				case HCI_CMD_OGF_LINK_POLICY_COMMANDS:
 				{
-					ocf_code["value"] = COMMAND_OCF_LINK_POLICY_STRING_ENUM.at(static_cast<COMMAND_OCF_LINK_POLICY_ENUM>(ocf));
+					ogf_code["value"] = COMMAND_OGF_STRING_ENUM.at(HCI_CMD_OGF_LINK_POLICY_COMMANDS);
+
+					if (COMMAND_OCF_LINK_POLICY_STRING_ENUM.count(ocf))
+						ocf_code["value"] = COMMAND_OCF_LINK_POLICY_STRING_ENUM.at(ocf);
 					break;
 				}
 				case HCI_CMD_OGF_CONTROLLER_BASEBAND_COMMANDS:
 				{
-					ocf_code["value"] = COMMAND_OCF_CTRL_BSB_STRING_ENUM.at(static_cast<COMMAND_OCF_CTRL_BSB_ENUM>(ocf));
+					ogf_code["value"] = COMMAND_OGF_STRING_ENUM.at(HCI_CMD_OGF_CONTROLLER_BASEBAND_COMMANDS);
+
+					if (COMMAND_OCF_CTRL_BSB_STRING_ENUM.count(ocf))
+						ocf_code["value"] = COMMAND_OCF_CTRL_BSB_STRING_ENUM.at(ocf);
+
 					break;
 				}
 				case HCI_CMD_OGF_INFORMATIONAL_PARAMETERS:
 				{
-					ocf_code["value"] = COMMAND_OCF_INFORMATIONAL_STRING_ENUM.at(static_cast<COMMAND_OCF_INFORMATIONAL_ENUM>(ocf));
+					ogf_code["value"] = COMMAND_OGF_STRING_ENUM.at(HCI_CMD_OGF_INFORMATIONAL_PARAMETERS);
+
+					if (COMMAND_OCF_INFORMATIONAL_STRING_ENUM.count(ocf))
+						ocf_code["value"] = COMMAND_OCF_INFORMATIONAL_STRING_ENUM.at(ocf);
+
 					break;
 				}
 				case HCI_CMD_OGF_STATUS_PARAMETERS:
 				{
+					ogf_code["value"] = COMMAND_OGF_STRING_ENUM.at(HCI_CMD_OGF_STATUS_PARAMETERS);
 					break;
 				}
 				case HCI_CMD_OGF_TESTING_COMMANDS:
 				{
+					ogf_code["value"] = COMMAND_OGF_STRING_ENUM.at(HCI_CMD_OGF_TESTING_COMMANDS);
 					break;
 				}
 				case HCI_CMD_OGF_LE_CONTROLLER_COMMANDS:
 				{
-					ocf_code["value"] = COMMAND_OCF_LE_STRING_ENUM.at(static_cast<COMMAND_OCF_LE_ENUM>(ocf));
+					ogf_code["value"] = COMMAND_OGF_STRING_ENUM.at(HCI_CMD_OGF_LE_CONTROLLER_COMMANDS);
+
+					if (COMMAND_OCF_LE_STRING_ENUM.count(ocf))
+						ocf_code["value"] = COMMAND_OCF_LE_STRING_ENUM.at(ocf);
+					
 					break;
 				}
 				case HCI_CMD_OGF_VENDOR_SPECIFIC:
 				{
+					ogf_code["value"] = COMMAND_OGF_STRING_ENUM.at(HCI_CMD_OGF_VENDOR_SPECIFIC);
 					break;
 				}
 			}

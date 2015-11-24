@@ -215,6 +215,207 @@ typedef struct le_meta_advertising_report_event : public IHciEventFrame {
 
 } le_meta_advertising_report_event_t;
 
+
+/* HCI Event 0x0F : Command status Event*/
+typedef struct command_status  : public IHciEventFrame{
+
+	uint8_t status;         /* 1B | 0x00 : Connection successfully completed, 0x01-0xFF : connection failure */
+	uint8_t num_hci_packet; /*The Number of HCI command packets which are allowed to be sent to the Controller from the Host*/
+
+	/*Opcode of the command which caused this event and is pending completion*/
+	uint8_t ogf;
+	uint8_t ocf;
+
+	command_status(const std::vector<char> &data){
+		this->event_code = HCI_EVENT_COMMAND_STATUS;
+		this->parameter_total_length = data[EVENT_FRAME_OFFSET];
+		this->status = data[EVENT_FRAME_OFFSET+1];
+		this->num_hci_packet = data[EVENT_FRAME_OFFSET + 2];
+		ogf = get_ogf(data[EVENT_FRAME_OFFSET + 4]);
+		ocf = get_ocf(data[EVENT_FRAME_OFFSET + 4],data[EVENT_FRAME_OFFSET + 3]);
+	}
+
+	void print(){
+		std::cout << "> COMMAND_STATUS Event : \n" << toJson().data() << std::endl;
+	}
+
+	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
+
+	Json::Value toJsonObj(){
+
+		Json::Value output;
+		Json::Value parameters;
+		init(output);
+		parameters["status"] =  status;
+		parameters["num_hci_packet"] =  num_hci_packet;
+
+		Json::Value command_opcode;
+
+		Json::Value ogf_val;
+		ogf_val["code"] = ogf;
+
+		if (COMMAND_OGF_STRING_ENUM.count(ogf))
+			ogf_val["value"] = COMMAND_OGF_STRING_ENUM.at(ogf);
+
+		Json::Value ocf_val;
+		ocf_val["code"] = ocf;
+
+		switch (ogf)
+		{
+			case HCI_CMD_OGF_LINK_CONTROL_COMMANDS:
+			{
+				if (COMMAND_OCF_LINK_CONTROL_STRING_ENUM.count(ocf))
+					ocf_val["value"] = COMMAND_OCF_LINK_CONTROL_STRING_ENUM.at(ocf);
+				break;
+			}
+			case HCI_CMD_OGF_LINK_POLICY_COMMANDS:
+			{
+				if (COMMAND_OCF_LINK_POLICY_STRING_ENUM.count(ocf))
+					ocf_val["value"] = COMMAND_OCF_LINK_POLICY_STRING_ENUM.at(ocf);
+				break;
+			}
+			case HCI_CMD_OGF_CONTROLLER_BASEBAND_COMMANDS:
+			{
+				if (COMMAND_OCF_CTRL_BSB_STRING_ENUM.count(ocf))
+					ocf_val["value"] = COMMAND_OCF_CTRL_BSB_STRING_ENUM.at(ocf);
+
+				break;
+			}
+			case HCI_CMD_OGF_INFORMATIONAL_PARAMETERS:
+			{
+				if (COMMAND_OCF_INFORMATIONAL_STRING_ENUM.count(ocf))
+					ocf_val["value"] = COMMAND_OCF_INFORMATIONAL_STRING_ENUM.at(ocf);
+
+				break;
+			}
+			case HCI_CMD_OGF_STATUS_PARAMETERS:
+			{
+				break;
+			}
+			case HCI_CMD_OGF_TESTING_COMMANDS:
+			{
+				break;
+			}
+			case HCI_CMD_OGF_LE_CONTROLLER_COMMANDS:
+			{
+				if (COMMAND_OCF_LE_STRING_ENUM.count(ocf))
+					ocf_val["value"] = COMMAND_OCF_LE_STRING_ENUM.at(ocf);
+				
+				break;
+			}
+			case HCI_CMD_OGF_VENDOR_SPECIFIC:
+			{
+				break;
+			}
+		}
+
+		command_opcode["ogf"] = ogf_val;
+		command_opcode["ocf"] = ocf_val;
+
+		parameters["command_opcode"] =  command_opcode;
+		output["parameters"] = parameters;
+		return output;
+	}
+
+} command_status_t;
+
+/* HCI Event 0x01 : Inquiry Complete Event*/
+typedef struct inquiry_complete_event  : public IHciEventFrame{
+
+	uint8_t status;         /* 1B | 0x00 : Connection successfully completed, 0x01-0xFF : connection failure */
+
+	inquiry_complete_event(const std::vector<char> &data){
+		this->event_code = HCI_EVENT_INQUIRY_COMPLETE;
+		this->parameter_total_length = data[EVENT_FRAME_OFFSET];
+		this->status = data[EVENT_FRAME_OFFSET+1];
+	}
+
+	void print(){
+		std::cout << "> INQUIRY_EVENT : \n" << toJson().data() << std::endl;
+	}
+
+	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
+
+	Json::Value toJsonObj(){
+
+		Json::Value output;
+		Json::Value parameters;
+		init(output);
+		parameters["status"] =  status;
+		output["parameters"] = parameters;
+		return output;
+	}
+
+} inquiry_complete_event_t;
+
+
+/* HCI Event 0x2F : Extended Inquiry Event*/
+typedef struct extended_inquiry_result_event : public IHciEventFrame{
+
+	uint8_t              num_responses; /*Number of responses from the inquiry*/
+	bt_address           bd_addr; /*BD_ADDR for the device that responded*/
+	uint8_t              page_repetition_mode; /*0:R0 1:R1 2:R2*/
+	uint32_t             class_of_device; /*Class of Device for the device that responded*/
+	uint16_t             clock_offset;
+	uint8_t              rssi;
+	std::vector<uint8_t> extended_inquiry_response;
+
+	extended_inquiry_result_event(const std::vector<char> &data){
+		this->event_code = HCI_EVENT_EXTENDED_INQUIRY_RESULT;
+		this->parameter_total_length = data[EVENT_FRAME_OFFSET];
+		this->num_responses = data[EVENT_FRAME_OFFSET+1];
+		bd_addr.address[0]=data[EVENT_FRAME_OFFSET + 7];
+		bd_addr.address[1]=data[EVENT_FRAME_OFFSET + 6];
+		bd_addr.address[2]=data[EVENT_FRAME_OFFSET + 5];
+		bd_addr.address[3]=data[EVENT_FRAME_OFFSET + 4];
+		bd_addr.address[4]=data[EVENT_FRAME_OFFSET + 3];
+		bd_addr.address[5]=data[EVENT_FRAME_OFFSET + 2];
+		page_repetition_mode = data[EVENT_FRAME_OFFSET + 8];
+		//1 octet reserved here
+		class_of_device = data[EVENT_FRAME_OFFSET + 10] + data[EVENT_FRAME_OFFSET + 11 ] << 8 + data[EVENT_FRAME_OFFSET + 12 ] << 16 ;
+		clock_offset = data[EVENT_FRAME_OFFSET + 13] + data[EVENT_FRAME_OFFSET + 14] << 8;
+		rssi = data[EVENT_FRAME_OFFSET + 15];
+		for (unsigned int i = 0 ; i< 240;i++){
+			extended_inquiry_response.push_back(data[EVENT_FRAME_OFFSET + 16]);
+		}
+	}
+
+	void print(){
+		std::cout << "> EXTENDED INQUIRY_EVENT : \n" << toJson().data() << std::endl;
+	}
+
+	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
+
+	Json::Value toJsonObj(){
+
+		Json::Value output;
+		Json::Value parameters;
+		init(output);
+		parameters["num_responses"] =  num_responses;
+		parameters["bd_addr"] =  bd_addr.toString();
+		parameters["page_repetition_mode"] =  page_repetition_mode;
+		parameters["class_of_device"] =  class_of_device;
+		parameters["clock_offset"] =  clock_offset;
+		parameters["rssi"] =  rssi;
+
+		Json::Value inquiry_response_array(Json::arrayValue);
+		for (unsigned int i = 0 ; i< 240;i++){
+			inquiry_response_array.append(extended_inquiry_response[i]);
+		}
+		parameters["extended_inquiry_response"] =  inquiry_response_array;
+
+		output["parameters"] = parameters;
+		return output;
+	}
+
+} extended_inquiry_result_event_t;
+
 /* HCI LE Meta sub event 0x01 : LE_CONNECTION_COMPLETE*/
 typedef struct le_meta_connection_complete_event : public IHciEventFrame {
 

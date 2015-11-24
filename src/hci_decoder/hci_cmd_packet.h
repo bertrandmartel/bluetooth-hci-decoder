@@ -62,12 +62,6 @@ typedef struct void_cmd : public IHciCommandFrame {
 
 } void_cmd_t;
 
-/*************************************************************************/
-/*************************************************************************/
-/********************* HCI LE COMMANDS ***********************************/
-/*************************************************************************/
-/*************************************************************************/
-
 /*HCI vendor specific frame*/
 typedef struct vendor_specific_cmd : public IHciCommandFrame {
 
@@ -103,6 +97,58 @@ typedef struct vendor_specific_cmd : public IHciCommandFrame {
 	};
 
 } vendor_specific_cmd_t;
+
+/*************************************************************************/
+/*************************************************************************/
+/*************** HCI LINK CONTROL COMMANDS *******************************/
+/*************************************************************************/
+/*************************************************************************/
+
+/*HCI Command : OGF=0x01 | OCF=0x0001 Inquiry Command*/
+typedef struct link_control_inquiry_cmd : public IHciCommandFrame {
+
+	uint32_t lap;
+	uint8_t inquiry_length;
+	uint8_t num_responses;
+
+	link_control_inquiry_cmd(const std::vector<char> &data){
+		this->ogf = HCI_CMD_OGF_LINK_CONTROL_COMMANDS;
+		this->ocf = HCI_CMD_OCF_LINK_CONTROL_INQUIRY_COMMAND;
+		parameter_total_length = data[COMMAND_FRAME_OFFSET];
+		lap = data[COMMAND_FRAME_OFFSET + 1 ];
+		inquiry_length = data[COMMAND_FRAME_OFFSET + 2 ];
+		num_responses = data[COMMAND_FRAME_OFFSET + 3 ];
+	}
+
+	void print(){
+		std::cout << toJson().data() << std::endl;
+	}
+
+	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
+
+	Json::Value toJsonObj(){
+		Json::Value output;
+		init(output);
+
+		Json::Value parameters;
+		parameters["lap"] = lap;
+		parameters["inquiry_length"] = inquiry_length;
+		parameters["num_responses"] = num_responses;
+		output["parameters"] = parameters;
+
+		return output;
+	};
+
+} link_control_inquiry_cmd_t;
+
+/*************************************************************************/
+/*************************************************************************/
+/********************* HCI LE COMMANDS ***********************************/
+/*************************************************************************/
+/*************************************************************************/
+
 
 /*HCI Command : OGF=0x08 | OCF=0x000B LE Set Scan Parameters Command*/
 typedef struct le_set_scan_parameters_cmd : public IHciCommandFrame {
@@ -405,6 +451,46 @@ typedef struct ctrl_bsb_write_local_name_cmd : public IHciCommandFrame {
 	}
 
 } ctrl_bsb_write_local_name_cmd_t;
+
+/*HCI Command : OGF=0x03 | OCF=0x0005 Set event filter Command*/
+typedef struct ctrl_bsb_set_event_filter_cmd : public IHciCommandFrame {
+
+	uint8_t filter_type;
+	uint8_t inquiry_result_filter_condition_type;
+	//uint8_t connection_setup_filter_condition_type;
+
+	ctrl_bsb_set_event_filter_cmd(const std::vector<char> &data){
+		this->ogf = HCI_CMD_OGF_CONTROLLER_BASEBAND_COMMANDS;
+		this->ocf = HCI_CMD_OCF_CTRL_BSB_WRITE_LOCAL_NAME_COMMAND;
+		parameter_total_length = data[COMMAND_FRAME_OFFSET];
+
+		filter_type = data[COMMAND_FRAME_OFFSET + 1];
+		inquiry_result_filter_condition_type = data[COMMAND_FRAME_OFFSET + 2];
+		//connection_setup_filter_condition_type = data[COMMAND_FRAME_OFFSET + 3];
+		
+	}
+
+	void print(){
+		std::cout << toJson().data() << std::endl;
+	}
+
+	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
+
+	Json::Value toJsonObj(){
+		Json::Value output;
+		init(output);
+		Json::Value parameters;
+		parameters["filter_type"] = filter_type;
+		parameters["inquiry_result_filter_condition_type"] = inquiry_result_filter_condition_type;
+		//parameters["connection_setup_filter_condition_type"] = connection_setup_filter_condition_type;
+		output["parameters"] = parameters;
+		return output;
+	}
+
+} ctrl_bsb_set_event_filter_cmd_t;
+
 
 /*HCI Command : OGF=0x03 | OCF=0x0023 Read Class of Device Command*/
 typedef struct ctrl_bsb_read_class_of_device_cmd : public IHciCommandFrame {
