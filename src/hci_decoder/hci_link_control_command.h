@@ -22,18 +22,12 @@
  * THE SOFTWARE.
  */
 /**
-	hci_ogf.h
-	list of HCI Opcode Group Field for HCI Commands
+	hci_le_command.h
+	list of supported HCI LE Command
 
 	@author Bertrand Martel
 	@version 1.0
 */
-E(HCI_CMD_OGF_LINK_CONTROL_COMMANDS        , 0x01)
-E(HCI_CMD_OGF_LINK_POLICY_COMMANDS         , 0x02)
-E(HCI_CMD_OGF_CONTROLLER_BASEBAND_COMMANDS , 0x03)
-E(HCI_CMD_OGF_INFORMATIONAL_PARAMETERS     , 0x04)
-E(HCI_CMD_OGF_STATUS_PARAMETERS            , 0x05)
-E(HCI_CMD_OGF_TESTING_COMMANDS             , 0x06)
-E(HCI_CMD_OGF_LE_CONTROLLER_COMMANDS       , 0x08)
-E(HCI_CMD_OGF_VENDOR_SPECIFIC              , 0x3F)
+E(HCI_CMD_OCF_LINK_CONTROL_INQUIRY_COMMAND           ,0x0001 )
+E(HCI_CMD_OCF_LINK_CONTROL_INQUIRY_CANCEL_COMMAND    ,0x0002 )
 #undef E
