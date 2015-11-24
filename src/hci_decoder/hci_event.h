@@ -28,6 +28,9 @@
 	@author Bertrand Martel
 	@version 1.0
 */
-E(HCI_EVENT_COMMAND_COMPLETE   ,0x0E )
-E(HCI_EVENT_LE_META            ,0x3E )
+E(HCI_EVENT_COMMAND_COMPLETE        , 0x0E )
+E(HCI_EVENT_EXTENDED_INQUIRY_RESULT , 0x2F )
+E(HCI_EVENT_INQUIRY_COMPLETE        , 0x01 )
+E(HCI_EVENT_COMMAND_STATUS          , 0x0F )
+E(HCI_EVENT_LE_META                 , 0x3E )
 #undef E

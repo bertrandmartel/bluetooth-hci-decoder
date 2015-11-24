@@ -56,9 +56,21 @@ CommandComplete::CommandComplete(const std::vector<char> &data){
 	{
 		switch (ogf_ret)
 		{
-			case HCI_CMD_OGF_LINK_CONTROl_COMMANDS:
+			case HCI_CMD_OGF_LINK_CONTROL_COMMANDS:
 			{
-				cout << "[RESPONSE NOT DECODED] ogf : " << unsigned(ogf_ret) << " | ocf : " << unsigned(ocf_ret) << endl;
+				switch (ocf_ret)
+				{
+					case HCI_CMD_OCF_LINK_CONTROL_INQUIRY_CANCEL_COMMAND:
+					{
+						response_frame = new status_response_cmd(return_parameters);
+						break;
+					}
+					default:
+					{
+						cout << "[RESPONSE NOT DECODED] ogf : " << unsigned(ogf_ret) << " | ocf : " << unsigned(ocf_ret) << endl;
+					}
+					break;
+				}
 				break;
 			}
 			case HCI_CMD_OGF_LINK_POLICY_COMMANDS:
@@ -82,6 +94,11 @@ CommandComplete::CommandComplete(const std::vector<char> &data){
 				switch(ocf_ret)
 				{
 					case HCI_CMD_OCF_CTRL_BSB_RESET_COMMAND:
+					{
+						response_frame = new status_response_cmd(return_parameters);
+						break;
+					}
+					case HCI_CMD_OCF_CTRL_BSB_SET_EVENT_FILTER_COMMAND:
 					{
 						response_frame = new status_response_cmd(return_parameters);
 						break;
@@ -360,27 +377,37 @@ Json::Value CommandComplete::toJsonObj(){
 		ocf_code["code"] = ocf_ret;
 		switch (ogf_ret)
 		{
-			case HCI_CMD_OGF_LINK_CONTROl_COMMANDS:
+			case HCI_CMD_OGF_LINK_CONTROL_COMMANDS:
 			{
-				ogf_code["value"] = COMMAND_OGF_STRING_ENUM.at(HCI_CMD_OGF_LINK_CONTROl_COMMANDS);
+				ogf_code["value"] = COMMAND_OGF_STRING_ENUM.at(HCI_CMD_OGF_LINK_CONTROL_COMMANDS);
+				if (COMMAND_OCF_LINK_CONTROL_STRING_ENUM.count(ocf_ret))
+						ocf_code["value"] = COMMAND_OCF_LINK_CONTROL_STRING_ENUM.at(ocf_ret);
 				break;
 			}
 			case HCI_CMD_OGF_LINK_POLICY_COMMANDS:
 			{
 				ogf_code["value"] = COMMAND_OGF_STRING_ENUM.at(HCI_CMD_OGF_LINK_POLICY_COMMANDS);
-				ocf_code["value"] = COMMAND_OCF_LINK_POLICY_STRING_ENUM.at(static_cast<COMMAND_OCF_LINK_POLICY_ENUM>(ocf_ret));
+
+				if (COMMAND_OCF_LINK_POLICY_STRING_ENUM.count(ocf_ret))
+					ocf_code["value"] = COMMAND_OCF_LINK_POLICY_STRING_ENUM.at(ocf_ret);
 				break;
 			}
 			case HCI_CMD_OGF_CONTROLLER_BASEBAND_COMMANDS:
 			{
 				ogf_code["value"] = COMMAND_OGF_STRING_ENUM.at(HCI_CMD_OGF_CONTROLLER_BASEBAND_COMMANDS);
-				ocf_code["value"] = COMMAND_OCF_CTRL_BSB_STRING_ENUM.at(static_cast<COMMAND_OCF_CTRL_BSB_ENUM>(ocf_ret));
+
+				if (COMMAND_OCF_CTRL_BSB_STRING_ENUM.count(ocf_ret))
+					ocf_code["value"] = COMMAND_OCF_CTRL_BSB_STRING_ENUM.at(ocf_ret);
+
 				break;
 			}
 			case HCI_CMD_OGF_INFORMATIONAL_PARAMETERS:
 			{
 				ogf_code["value"] = COMMAND_OGF_STRING_ENUM.at(HCI_CMD_OGF_INFORMATIONAL_PARAMETERS);
-				ocf_code["value"] = COMMAND_OCF_INFORMATIONAL_STRING_ENUM.at(static_cast<COMMAND_OCF_INFORMATIONAL_ENUM>(ocf_ret));
+
+				if (COMMAND_OCF_INFORMATIONAL_STRING_ENUM.count(ocf_ret))
+					ocf_code["value"] = COMMAND_OCF_INFORMATIONAL_STRING_ENUM.at(ocf_ret);
+
 				break;
 			}
 			case HCI_CMD_OGF_STATUS_PARAMETERS:
@@ -396,7 +423,10 @@ Json::Value CommandComplete::toJsonObj(){
 			case HCI_CMD_OGF_LE_CONTROLLER_COMMANDS:
 			{
 				ogf_code["value"] = COMMAND_OGF_STRING_ENUM.at(HCI_CMD_OGF_LE_CONTROLLER_COMMANDS);
-				ocf_code["value"] = COMMAND_OCF_LE_STRING_ENUM.at(static_cast<COMMAND_OCF_LE_ENUM>(ocf_ret));
+
+				if (COMMAND_OCF_LE_STRING_ENUM.count(ocf_ret))
+					ocf_code["value"] = COMMAND_OCF_LE_STRING_ENUM.at(ocf_ret);
+				
 				break;
 			}
 			case HCI_CMD_OGF_VENDOR_SPECIFIC:

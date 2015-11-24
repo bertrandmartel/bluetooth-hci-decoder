@@ -83,9 +83,26 @@ IHciFrame* HciDecoder::decode(std::vector<char> data){
 
 			switch (ogf){
 
-				case HCI_CMD_OGF_LINK_CONTROl_COMMANDS:
+				case HCI_CMD_OGF_LINK_CONTROL_COMMANDS:
 				{
-					cout << "[NOT DECODED] ogf : " << unsigned(ogf) << " | ocf : " << unsigned(ocf) << endl;
+					
+					switch(ocf)
+					{
+						case HCI_CMD_OCF_LINK_CONTROL_INQUIRY_COMMAND:
+						{
+							frame = new link_control_inquiry_cmd_t(data);
+							break;
+						}
+						case HCI_CMD_OCF_LINK_CONTROL_INQUIRY_CANCEL_COMMAND:
+						{
+							frame = new void_cmd_t(data,HCI_CMD_OGF_LINK_CONTROL_COMMANDS,HCI_CMD_OCF_LINK_CONTROL_INQUIRY_CANCEL_COMMAND);
+							break;
+						}
+						default:
+						{
+							cout << "[NOT DECODED] ogf : " << unsigned(ogf) << " | ocf : " << unsigned(ocf) << endl;
+						}
+					}
 					break;
 				}
 				case HCI_CMD_OGF_LINK_POLICY_COMMANDS:
@@ -111,6 +128,11 @@ IHciFrame* HciDecoder::decode(std::vector<char> data){
 						case HCI_CMD_OCF_CTRL_BSB_RESET_COMMAND:
 						{
 							frame = new void_cmd_t(data,HCI_CMD_OGF_CONTROLLER_BASEBAND_COMMANDS,HCI_CMD_OCF_CTRL_BSB_RESET_COMMAND);
+							break;
+						}
+						case HCI_CMD_OCF_CTRL_BSB_SET_EVENT_FILTER_COMMAND :
+						{
+							frame = new ctrl_bsb_set_event_filter_cmd_t(data);
 							break;
 						}
 						case HCI_CMD_OCF_CTRL_BSB_WRITE_LOCAL_NAME_COMMAND:
@@ -387,6 +409,16 @@ IHciFrame* HciDecoder::decode(std::vector<char> data){
 					frame = new CommandComplete(data);
 					break;
 				}
+				case HCI_EVENT_INQUIRY_COMPLETE:
+				{
+					frame = new inquiry_complete_event_t(data);
+					break;
+				}
+				case HCI_EVENT_EXTENDED_INQUIRY_RESULT:
+				{
+					frame = new extended_inquiry_result_event_t(data);
+					break;
+				}
 				case HCI_EVENT_LE_META:
 				{
 					le_meta_event event(data);
@@ -439,14 +471,19 @@ IHciFrame* HciDecoder::decode(std::vector<char> data){
 							break;
 						}
 						default:
-							cout << "[NOT DECODED] HCI_EVENT : " << data[1] << endl;
+							cout << "[NOT DECODED] HCI_EVENT : " << (int)data[1] << endl;
 							break;
 					}
 					break;
 				}
+				case HCI_EVENT_COMMAND_STATUS:
+				{
+					frame = new command_status_t(data);
+					break;
+				}
 				default:
 				{
-					cout << "[NOT DECODED] HCI_EVENT : " << data[1] << endl;
+					cout << "[NOT DECODED] HCI_EVENT : " << (int)data[1] << endl;
 				}
 			}
 			break;
