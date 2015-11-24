@@ -48,7 +48,7 @@ enum COMMAND_OCF_LE_ENUM {
 };
 
 #define E(x,y) { x,#x },
-const std::map< COMMAND_OCF_LE_ENUM, std::string> COMMAND_OCF_LE_STRING_ENUM = {
+const std::map< int, std::string> COMMAND_OCF_LE_STRING_ENUM = {
 #include "hci_decoder/hci_le_command.h"
 };
 
@@ -58,7 +58,7 @@ enum COMMAND_OCF_CTRL_BSB_ENUM {
 };
 
 #define E(x,y) { x,#x },
-const std::map< COMMAND_OCF_CTRL_BSB_ENUM, std::string> COMMAND_OCF_CTRL_BSB_STRING_ENUM = {
+const std::map< int, std::string> COMMAND_OCF_CTRL_BSB_STRING_ENUM = {
 #include "hci_decoder/hci_ctrl_bsb_command.h"
 };
 
@@ -68,7 +68,7 @@ enum COMMAND_OCF_INFORMATIONAL_ENUM {
 };
 
 #define E(x,y) { x,#x },
-const std::map< COMMAND_OCF_INFORMATIONAL_ENUM, std::string> COMMAND_OCF_INFORMATIONAL_STRING_ENUM = {
+const std::map< int, std::string> COMMAND_OCF_INFORMATIONAL_STRING_ENUM = {
 #include "hci_decoder/hci_informational_command.h"
 };
 
@@ -78,8 +78,18 @@ enum COMMAND_OCF_LINK_POLICY_ENUM {
 };
 
 #define E(x,y) { x,#x },
-const std::map< COMMAND_OCF_LINK_POLICY_ENUM, std::string> COMMAND_OCF_LINK_POLICY_STRING_ENUM = {
+const std::map< int, std::string> COMMAND_OCF_LINK_POLICY_STRING_ENUM = {
 #include "hci_decoder/hci_link_policy_command.h"
+};
+
+#define E(x,y) x = y,
+enum COMMAND_OCF_LINK_CONTROL_ENUM {
+#include "hci_decoder/hci_link_control_command.h"
+};
+
+#define E(x,y) { x,#x },
+const std::map< int, std::string> COMMAND_OCF_LINK_CONTROL_STRING_ENUM = {
+#include "hci_decoder/hci_link_control_command.h"
 };
 
 #define E(x,y) x = y,
@@ -88,7 +98,7 @@ enum EVENT_ENUM {
 };
 
 #define E(x,y) { x,#x },
-const std::map< EVENT_ENUM, std::string> EVENT_STRING_ENUM = {
+const std::map< int, std::string> EVENT_STRING_ENUM = {
 #include "hci_decoder/hci_event.h"
 };
 
@@ -98,7 +108,7 @@ enum LE_SUBEVENT_ENUM {
 };
 
 #define E(x,y) { x,#x },
-const std::map< LE_SUBEVENT_ENUM, std::string> LE_SUBEVENT_STRING_ENUM = {
+const std::map< int, std::string> LE_SUBEVENT_STRING_ENUM = {
 #include "hci_decoder/hci_subevent.h"
 };
 
@@ -108,7 +118,7 @@ enum COMMAND_OGF_ENUM {
 };
 
 #define E(x,y) { x,#x },
-const std::map< COMMAND_OGF_ENUM, std::string> COMMAND_OGF_STRING_ENUM = {
+const std::map< int, std::string> COMMAND_OGF_STRING_ENUM = {
 #include "hci_decoder/hci_ogf.h"
 };
 
@@ -118,9 +128,10 @@ enum HCI_PACKET_TYPE_ENUM {
 };
 
 #define E(x,y) { x,#x },
-const std::map< HCI_PACKET_TYPE_ENUM, std::string> HCI_PACKET_TYPE_STRING_ENUM = {
+const std::map< int, std::string> HCI_PACKET_TYPE_STRING_ENUM = {
 #include "hci_decoder/hci_packet_type.h"
 };
+
 
 struct bt_address{
 	
