@@ -200,7 +200,7 @@ typedef struct le_create_connection_cmd : public IHciCommandFrame {
 
 	le_create_connection_cmd(const std::vector<char> &data){
 		this->ogf = HCI_CMD_OGF_LE_CONTROLLER_COMMANDS;
-		this->ocf = HCI_CMD_OCF_LE_SET_SCAN_PARAMETERS_COMMAND;
+		this->ocf = HCI_CMD_OCF_LE_CREATE_CONNECTION_COMMAND;
 		parameter_total_length = data[COMMAND_FRAME_OFFSET];
 		this->scan_interval = data[COMMAND_FRAME_OFFSET+1] + (data[COMMAND_FRAME_OFFSET+2]<<8);
 		this->scan_window = data[COMMAND_FRAME_OFFSET+3] + (data[COMMAND_FRAME_OFFSET+4]<<8);
