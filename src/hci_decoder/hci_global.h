@@ -42,6 +42,8 @@
 //excluding event code decode from parameter length field
 #define EVENT_FRAME_OFFSET   2
 
+#define ACL_FRAME_OFFSET     1
+
 #define E(x,y) x = y,
 enum COMMAND_OCF_LE_ENUM {
 #include "hci_decoder/hci_le_command.h"
