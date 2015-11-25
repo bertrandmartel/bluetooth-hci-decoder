@@ -104,6 +104,45 @@ typedef struct vendor_specific_cmd : public IHciCommandFrame {
 /*************************************************************************/
 /*************************************************************************/
 
+/*HCI Command : OGF=0x01 | OCF=0x0006 Disconnect Command*/
+typedef struct link_control_disconnect_cmd : public IHciCommandFrame {
+
+	uint16_t connection_handle; /* 2B | Connection_Handle for the connection being disconnected*/
+	uint8_t  reason; /* 1B | Authentication Failure error code (0x05), Other End Terminated Connec-
+							tion error codes (0x13-0x15), Unsupported Remote Feature error code
+							(0x1A), Pairing with Unit Key Not Supported error code (0x29) and Unac-
+							ceptable Connection Parameters error code (0x3B)*/
+
+	link_control_disconnect_cmd(const std::vector<char> &data){
+		this->ogf = HCI_CMD_OGF_LINK_CONTROL_COMMANDS;
+		this->ocf = HCI_CMD_OCF_LINK_CONTROL_DISCONNECT_COMMAND;
+		parameter_total_length = data[COMMAND_FRAME_OFFSET];
+		connection_handle = data[COMMAND_FRAME_OFFSET + 1 ] + (data[COMMAND_FRAME_OFFSET+2]<<8);
+		this->reason = data[COMMAND_FRAME_OFFSET +3];
+	}
+
+	void print(){
+		std::cout << toJson().data() << std::endl;
+	}
+
+	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
+
+	Json::Value toJsonObj(){
+		Json::Value output;
+		init(output);
+
+		Json::Value parameters;
+		parameters["connection_handle"] = connection_handle;
+		parameters["reason"] = reason;
+		output["parameters"] = parameters;
+
+		return output;
+	};
+
+} link_control_disconnect_cmd_t;
+
 /*HCI Command : OGF=0x01 | OCF=0x0001 Inquiry Command*/
 typedef struct link_control_inquiry_cmd : public IHciCommandFrame {
 
