@@ -98,6 +98,11 @@ IHciFrame* HciDecoder::decode(std::vector<char> data){
 							frame = new void_cmd_t(data,HCI_CMD_OGF_LINK_CONTROL_COMMANDS,HCI_CMD_OCF_LINK_CONTROL_INQUIRY_CANCEL_COMMAND);
 							break;
 						}
+						case HCI_CMD_OCF_LINK_CONTROL_DISCONNECT_COMMAND:
+						{
+							frame = new link_control_disconnect_cmd_t(data);
+							break;
+						}
 						default:
 						{
 							cout << "[NOT DECODED] ogf : " << unsigned(ogf) << " | ocf : " << unsigned(ocf) << endl;
