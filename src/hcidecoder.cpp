@@ -31,6 +31,7 @@
 #include "hci_decoder/hcidecoder.h"
 #include "hci_decoder/hci_cmd_packet.h"
 #include "hci_decoder/hci_event_packet.h"
+#include "hci_decoder/hci_acl.h"
 #include "hci_decoder/command_complete.h"
 #include "json/json.h"
 
@@ -407,7 +408,7 @@ IHciFrame* HciDecoder::decode(std::vector<char> data){
 		}
 		case HCI_TYPE_ACL_DATA:
 		{
-			cout << "[NOT DECODED] HCI_TYPE_ACL_DATA" << endl;
+			frame = new hci_acl_t(data);
 			break;
 		}
 		case HCI_TYPE_SCO_DATA:

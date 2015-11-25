@@ -33,6 +33,7 @@
 #include "btsnoopmonitor.h"
 #include "btsnoop/ibtsnooplistener.h"
 #include "btsnoop/btsnoopfileinfo.h"
+#include "hci_decoder/hci_global.h"
 
 using namespace std;
 
@@ -58,7 +59,11 @@ void BtSnoopMonitor::onSnoopPacketReceived(BtSnoopFileInfo fileInfo,BtSnoopPacke
 	IHciFrame * frame = hci_decoder.decode(packet.getPacketData());
 
 	if (frame!=0){
-		cout << "frame : " << frame->toJson() << endl;
+
+		if (frame->getPacketType() == HCI_TYPE_ACL_DATA){
+
+			//cout << frame->toJson() << endl;
+		}
 	}
     //packet.printInfo();
     //cout << "_________________________" << endl;
