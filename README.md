@@ -40,6 +40,8 @@ IHciFrame * frame = hci_decoder.decode(packet);
 
 ```
 
+<i>`IHciFrame * frame` can be null if HCI frame is not currently supported</i>
+
 ###Architecture
 
 ![architecture](img/arch.png)
