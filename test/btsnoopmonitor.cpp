@@ -54,7 +54,12 @@ BtSnoopMonitor::~BtSnoopMonitor(){
 void BtSnoopMonitor::onSnoopPacketReceived(BtSnoopFileInfo fileInfo,BtSnoopPacket packet){
 
 	//fileheader.printInfo();
-    hcidecoder.decode(packet.getPacketData());
+	HciDecoder hci_decoder;
+	IHciFrame * frame = hci_decoder.decode(packet.getPacketData());
+
+	if (frame!=0){
+		cout << "frame : " << frame->toJson() << endl;
+	}
     //packet.printInfo();
     //cout << "_________________________" << endl;
 }

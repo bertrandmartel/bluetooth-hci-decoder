@@ -2,9 +2,9 @@ CXX         = g++
 STATIC      = libhcidecoder.a
 LIB_NAME    = hcidecoder
 EXEC        = hci-decoder-test
-MAIN_PATH   = test/main.cpp
+MAIN_PATH   = test/main.cpp test/btsnoopmonitor.cpp
 CFLAGS      = -O3 -g -Werror -std=c++11
-LDFLAGS     = -lbtsnoop
+LDFLAGS     = -lpthread -lbtsnoop 
 SRC_DIR     = src
 OBJECT_DIR  = bin
 OBJECTS     = jsoncpp.o hcidecoder.o command_complete.o

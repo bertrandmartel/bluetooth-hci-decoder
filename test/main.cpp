@@ -53,7 +53,18 @@ int main(int argc, char *argv[])
 
 	sigaction(SIGINT, &sigIntHandler, NULL);
 
-	std::string recordFile("/home/abathur/Bureau/open_source/bt-hci-decoder/snoop_files/btsnoop_hci.log");
+	BtSnoopParser parser;
+	BtSnoopMonitor monitor;
+	parser.addSnoopListener(&monitor);
+
+	//parse streaming file
+	bool success = parser.decode_streaming_file("/home/abathur/Bureau/open_source/bluetooth-hci-viewer/android/hcidecoder/src/main/jni/btsnoop_hci.log");
+	if (!success)
+		cout << "file reading error occured" << endl;
+
+
+	/*
+	std::string recordFile("/home/abathur/Bureau/open_source/bluetooth-hci-viewer/android/hcidecoder/src/main/jni/btsnoop_hci.log");
 	BtSnoopTask decoder(recordFile);
 
 	decoder.decode_file();
@@ -67,7 +78,7 @@ int main(int argc, char *argv[])
 		BtSnoopPacket packet = decoder.getPacketDataRecords()[i];
 		hci_decoder.decode(packet.getPacketData());
 	}
-
+*/
 	/*
 	std::vector<IHciFrame*> frame_list = hci_decoder.getFrameList();
 
@@ -75,7 +86,7 @@ int main(int argc, char *argv[])
 		frame_list.at(i)->print();
 	}*/
 
-	cout << hci_decoder.toJson(true) << endl;
+	//cout << hci_decoder.toJson(true) << endl;
 
 	return 0;
 }
