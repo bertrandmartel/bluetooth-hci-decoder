@@ -341,6 +341,11 @@ IHciFrame* HciDecoder::decode(std::vector<char> data){
 							frame = new le_set_scan_enable_cmd_t(data);
 							break;
 						}
+						case HCI_CMD_OCF_LE_CREATE_CONNECTION_COMMAND:
+						{
+							frame = new le_create_connection_cmd_t(data);
+							break;
+						}
 						case HCI_CMD_OCF_LE_SET_ADVERTISING_PARAMETERS_COMMAND:
 						{
 							frame = new le_set_advertising_parameters_cmd_t(data);
