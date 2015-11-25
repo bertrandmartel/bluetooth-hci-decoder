@@ -321,6 +321,82 @@ typedef struct command_status  : public IHciEventFrame{
 
 } command_status_t;
 
+typedef struct completed_packet{
+
+	uint16_t connection_handle;
+	uint16_t num_of_completed_packet;
+
+	completed_packet(uint16_t connection_handle,uint16_t num_of_completed_packet){
+		this->connection_handle = connection_handle;
+		this->num_of_completed_packet = num_of_completed_packet;
+	}
+
+	Json::Value toJson(){
+		Json::Value output;
+		output["connection_handle"] = connection_handle;
+		output["num_of_completed_packet"] = num_of_completed_packet;
+		return output;
+	}
+
+} completed_packet_t;
+
+/* HCI Event 0x13 : Number of completed packet Event*/
+typedef struct number_of_completed_packet_event  : public IHciEventFrame{
+
+	uint8_t                         number_of_handles;             /* 1B | The number of Connection_Handles and Num_HCI_Data_Packets parameters pairs contained in this event */
+	std::vector<completed_packet_t*> completed_packet_list;
+
+	void clear(){
+		for (std::vector<completed_packet_t*>::iterator it = completed_packet_list.begin(); it != completed_packet_list.end();it++){
+			delete (*it);
+		}
+		completed_packet_list.clear();
+	}
+
+	number_of_completed_packet_event(const std::vector<char> &data){
+		this->event_code = HCI_EVENT_NUMBER_OF_COMPLETED_PACKET;
+		this->parameter_total_length = data[EVENT_FRAME_OFFSET];
+		this->number_of_handles = data[EVENT_FRAME_OFFSET+1];
+
+		int offset = 0;
+
+		for (unsigned int i = 0; i  < number_of_handles;i++){
+			completed_packet_list.push_back(new completed_packet_t(
+				data[EVENT_FRAME_OFFSET + 2 + offset]+(data[EVENT_FRAME_OFFSET + 3 + offset]<<8),
+				data[EVENT_FRAME_OFFSET + 4 + offset]+(data[EVENT_FRAME_OFFSET + 5 + offset]<<8)
+				));
+			offset+=4;
+		}
+	}
+
+	void print(){
+		std::cout << "> NUMBER_OF_COMPLETED_PACKET_EVENT : \n" << toJson().data() << std::endl;
+	}
+
+	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
+
+	Json::Value toJsonObj(){
+
+		Json::Value output;
+		Json::Value parameters;
+		init(output);
+		parameters["number_of_handles"] =  number_of_handles;
+
+		Json::Value completed_packet_arr(Json::arrayValue);
+
+		for (unsigned int i = 0; i  < number_of_handles;i++){
+			completed_packet_arr.append(completed_packet_list[i]->toJson());
+		}
+		parameters["completed_packet_list"] = completed_packet_arr;
+
+		output["parameters"] = parameters;
+		return output;
+	}
+
+} number_of_completed_packet_event_t;
+
 /* HCI Event 0x05 : Disconnection Complete Event*/
 typedef struct disconnection_complete_event  : public IHciEventFrame{
 
