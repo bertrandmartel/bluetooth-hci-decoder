@@ -149,6 +149,39 @@ typedef struct link_control_inquiry_cmd : public IHciCommandFrame {
 /*************************************************************************/
 /*************************************************************************/
 
+/*HCI Command : OGF=0x08 | OCF=0x0016 LE Read remote used features Command*/
+typedef struct le_read_remote_used_features_cmd : public IHciCommandFrame {
+
+	uint8_t connection_handle;              /* 2B | Connection_Handle to be used to identify a connection */
+
+	le_read_remote_used_features_cmd(const std::vector<char> &data){
+		this->ogf = HCI_CMD_OGF_LE_CONTROLLER_COMMANDS;
+		this->ocf = HCI_CMD_OCF_LE_READ_REMOTE_USED_FEATURES_COMMAND;
+		parameter_total_length = data[COMMAND_FRAME_OFFSET];
+		this->connection_handle = data[COMMAND_FRAME_OFFSET+1] + (data[COMMAND_FRAME_OFFSET+2]<<8);
+	}
+
+	void print(){
+		std::cout << toJson().data() << std::endl;
+	}
+
+	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
+
+	Json::Value toJsonObj(){
+		Json::Value output;
+		init(output);
+
+		Json::Value parameters;
+		parameters["connection_handle"] = connection_handle;
+		output["parameters"] = parameters;
+
+		return output;
+	}
+
+} le_read_remote_used_features_cmd_t;
+
 /*HCI Command : OGF=0x08 | OCF=0x000D LE Create connection Command*/
 typedef struct le_create_connection_cmd : public IHciCommandFrame {
 
