@@ -149,6 +149,76 @@ typedef struct link_control_inquiry_cmd : public IHciCommandFrame {
 /*************************************************************************/
 /*************************************************************************/
 
+/*HCI Command : OGF=0x08 | OCF=0x000D LE Create connection Command*/
+typedef struct le_create_connection_cmd : public IHciCommandFrame {
+
+	uint16_t   scan_interval;
+	uint16_t   scan_window;
+	uint8_t    initiator_filter_policy;
+	uint8_t    peer_address_type;
+	bt_address peer_address;
+	uint8_t    own_address_type;
+	uint16_t   conn_interval_min;
+	uint16_t   conn_interval_max;
+	uint16_t   conn_latency;
+	uint16_t   supervision_timeout;
+	uint16_t   minimum_ce_length;
+	uint16_t   maximum_ce_length;
+
+	le_create_connection_cmd(const std::vector<char> &data){
+		this->ogf = HCI_CMD_OGF_LE_CONTROLLER_COMMANDS;
+		this->ocf = HCI_CMD_OCF_LE_SET_SCAN_PARAMETERS_COMMAND;
+		parameter_total_length = data[COMMAND_FRAME_OFFSET];
+		this->scan_interval = data[COMMAND_FRAME_OFFSET+1] + (data[COMMAND_FRAME_OFFSET+2]<<8);
+		this->scan_window = data[COMMAND_FRAME_OFFSET+3] + (data[COMMAND_FRAME_OFFSET+4]<<8);
+		this->initiator_filter_policy = data[COMMAND_FRAME_OFFSET+5];
+		this->peer_address_type = data[COMMAND_FRAME_OFFSET+6];
+		this->peer_address.address[0]=data[COMMAND_FRAME_OFFSET+12];
+		this->peer_address.address[1]=data[COMMAND_FRAME_OFFSET+11];
+		this->peer_address.address[2]=data[COMMAND_FRAME_OFFSET+10];
+		this->peer_address.address[3]=data[COMMAND_FRAME_OFFSET+9];
+		this->peer_address.address[4]=data[COMMAND_FRAME_OFFSET+8];
+		this->peer_address.address[5]=data[COMMAND_FRAME_OFFSET+7];
+		this->own_address_type = data[COMMAND_FRAME_OFFSET+13];
+		this->conn_interval_min = data[COMMAND_FRAME_OFFSET+14] + (data[COMMAND_FRAME_OFFSET+15]<<8);
+		this->conn_interval_max = data[COMMAND_FRAME_OFFSET+15] + (data[COMMAND_FRAME_OFFSET+16]<<8);
+		this->conn_latency = data[COMMAND_FRAME_OFFSET+17] + (data[COMMAND_FRAME_OFFSET+18]<<8);
+		this->supervision_timeout = data[COMMAND_FRAME_OFFSET+19] + (data[COMMAND_FRAME_OFFSET+20]<<8);
+		this->minimum_ce_length = data[COMMAND_FRAME_OFFSET+21] + (data[COMMAND_FRAME_OFFSET+22]<<8);
+		this->maximum_ce_length = data[COMMAND_FRAME_OFFSET+23] + (data[COMMAND_FRAME_OFFSET+24]<<8);
+	}
+
+	void print(){
+		std::cout << toJson().data() << std::endl;
+	}
+
+	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
+
+	Json::Value toJsonObj(){
+		Json::Value output;
+		init(output);
+
+		Json::Value parameters;
+		parameters["scan_interval"] = scan_interval;
+		parameters["scan_window"] = scan_window;
+		parameters["initiator_filter_policy"] = initiator_filter_policy;
+		parameters["peer_address_type"] = peer_address_type;
+		parameters["peer_address"] = peer_address.toString();
+		parameters["own_address_type"] = own_address_type;
+		parameters["conn_interval_min"] = conn_interval_min;
+		parameters["conn_interval_max"] = conn_interval_max;
+		parameters["conn_latency"] = conn_latency;
+		parameters["supervision_timeout"] = supervision_timeout;
+		parameters["minimum_ce_length"] = minimum_ce_length;
+		parameters["maximum_ce_length"] = maximum_ce_length;
+		output["parameters"] = parameters;
+
+		return output;
+	}
+
+} le_create_connection_cmd_t;
 
 /*HCI Command : OGF=0x08 | OCF=0x000B LE Set Scan Parameters Command*/
 typedef struct le_set_scan_parameters_cmd : public IHciCommandFrame {
