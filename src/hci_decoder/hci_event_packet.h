@@ -321,6 +321,43 @@ typedef struct command_status  : public IHciEventFrame{
 
 } command_status_t;
 
+/* HCI Event 0x05 : Disconnection Complete Event*/
+typedef struct disconnection_complete_event  : public IHciEventFrame{
+
+	uint8_t  status;             /* 1B | 0x00 : Connection successfully completed, 0x01-0xFF : connection failure */
+	uint16_t connection_handle;  /* 2B | Connection_Handle which was disconnected*/
+	uint8_t  reason;             /* 1B | Reason for disconnection*/
+
+	disconnection_complete_event(const std::vector<char> &data){
+		this->event_code = HCI_EVENT_DISCONNECTION_COMPLETE;
+		this->parameter_total_length = data[EVENT_FRAME_OFFSET];
+		this->status = data[EVENT_FRAME_OFFSET+1];
+		this->connection_handle = data[EVENT_FRAME_OFFSET+2] + (data[EVENT_FRAME_OFFSET+3]<<8);
+		this->reason = data[EVENT_FRAME_OFFSET+4];
+	}
+
+	void print(){
+		std::cout << "> DISCONNECTION_COMPLETE_EVENT : \n" << toJson().data() << std::endl;
+	}
+
+	std::string toJson(){
+		return convert_json_to_string(toJsonObj());
+	}
+
+	Json::Value toJsonObj(){
+
+		Json::Value output;
+		Json::Value parameters;
+		init(output);
+		parameters["status"] =  status;
+		parameters["connection_handle"] =  connection_handle;
+		parameters["reason"] =  reason;
+		output["parameters"] = parameters;
+		return output;
+	}
+
+} disconnection_complete_event_t;
+
 /* HCI Event 0x01 : Inquiry Complete Event*/
 typedef struct inquiry_complete_event  : public IHciEventFrame{
 
