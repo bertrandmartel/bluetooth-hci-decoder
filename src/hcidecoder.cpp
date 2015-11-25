@@ -424,6 +424,11 @@ IHciFrame* HciDecoder::decode(std::vector<char> data){
 					frame = new CommandComplete(data);
 					break;
 				}
+				case HCI_EVENT_DISCONNECTION_COMPLETE:
+				{
+					frame = new disconnection_complete_event_t(data);
+					break;
+				}
 				case HCI_EVENT_INQUIRY_COMPLETE:
 				{
 					frame = new inquiry_complete_event_t(data);
