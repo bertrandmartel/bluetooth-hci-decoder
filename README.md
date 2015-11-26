@@ -287,11 +287,23 @@ Common fields for all HCI Command frames:
 | HCI_CMD_OCF_LE_SET_SCAN_PARAMETERS_COMMAND           | 0x000B |
 | HCI_CMD_OCF_LE_SET_ADVERTISING_PARAMETERS_COMMAND    | 0x0006 |
 | HCI_CMD_OCF_LE_SET_SCAN_ENABLE_COMMAND               | 0x000C |
+| HCI_CMD_OCF_LE_CREATE_CONNECTION_COMMAND             | 0x000D |
 | HCI_CMD_OCF_LE_CLEAR_WHITE_LIST_COMMAND              | 0x0010 |
+| HCI_CMD_OCF_LE_READ_REMOTE_USED_FEATURES_COMMAND     | 0x0016 |
 | HCI_CMD_OCF_LE_READ_WHITE_LIST_SIZE_COMMAND          | 0x000F |
 | HCI_CMD_OCF_LE_SET_ADVERTISING_DATA_COMMAND          | 0x0008 |
 | HCI_CMD_OCF_LE_READ_BUFFER_SIZE_COMMAND              | 0x0002 |
 | HCI_CMD_OCF_LE_READ_LOCAL_SUPPORTED_FEATURES_COMMAND | 0x0003 |
+
+<hr/>
+
+  * Link Control Command
+
+| HCI Command string                                                  | HCI command value |
+|--------------------|-------------------|
+| HCI_CMD_OCF_LINK_CONTROL_INQUIRY_COMMAND  | 0x0001 |
+| HCI_CMD_OCF_LINK_CONTROL_INQUIRY_CANCEL_COMMAND | 0x0002 |
+| HCI_CMD_OCF_LINK_CONTROL_DISCONNECT_COMMAND | 0x0006 |
 
 <hr/>
 
@@ -308,6 +320,7 @@ Common fields for all HCI Command frames:
 | HCI Command string                                               | HCI command value |
 |--------------------|-------------------|
 | HCI_CMD_OCF_CTRL_BSB_RESET_COMMAND                               | 0x0003 |
+| HCI_CMD_OCF_CTRL_BSB_SET_EVENT_FILTER_COMMAND                    | 0x0005 |
 | HCI_CMD_OCF_CTRL_BSB_WRITE_LOCAL_NAME_COMMAND                    | 0x0013 |
 | HCI_CMD_OCF_CTRL_BSB_READ_LOCAL_NAME_COMMAND                     | 0x0014 |
 | HCI_CMD_OCF_CTRL_BSB_READ_CLASS_OF_DEVICE_COMMAND                | 0x0023 |
@@ -345,6 +358,11 @@ Common fields for all HCI Command frames:
 |--------------------|-------------------|
 | HCI_EVENT_COMMAND_COMPLETE   | 0x0E |
 | HCI_EVENT_LE_META            | 0x3E |
+| HCI_EVENT_DISCONNECTION_COMPLETE      | 0x05 |
+| HCI_EVENT_NUMBER_OF_COMPLETED_PACKET  | 0x13 |
+| HCI_EVENT_EXTENDED_INQUIRY_RESULT     | 0x2F |
+| HCI_EVENT_INQUIRY_COMPLETE            | 0x01 |
+| HCI_EVENT_COMMAND_STATUS              | 0x0F |
 
 <hr/>
 
@@ -354,6 +372,15 @@ Common fields for all HCI Command frames:
 |--------------------|-------------------|
 | HCI_EVENT_LE_CONNECTION_COMPLETE | 0x01 |
 | HCI_EVENT_LE_ADVERTISING_REPORT  | 0x02 |
+| HCI_EVENT_LE_CONNECTION_UPDATE_COMPLETE          | 0x03 |
+| HCI_EVENT_LE_READ_REMOTE_USED_FEATURES_COMPLETE  | 0x04 |
+| HCI_EVENT_LE_LONG_TERM_KEY_REQUEST               | 0x05 |
+| HCI_EVENT_LE_REMOTE_CONNECTION_PARAMETER_REQUEST | 0x06 |
+| HCI_EVENT_LE_DATA_LENGTH_CHANGE                  | 0x07 |
+| HCI_EVENT_LE_READ_LOCAL_P256_PUBLIC_KEY_COMPLETE | 0x08 |
+| HCI_EVENT_LE_GENERATE_DHKEY_COMPLETE             | 0x09 |
+| HCI_EVENT_LE_ENHANCED_CONNECTION_COMPLETE        | 0x0A |
+| HCI_EVENT_LE_DIRECT_ADVERTISING_REPORT           | 0x0B |
 
 <hr/>
 
