@@ -46,14 +46,6 @@ typedef struct void_cmd : public IHciCommandFrame {
 		parameter_total_length = data[COMMAND_FRAME_OFFSET];
 	}
 
-	void print(){
-		std::cout << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
-	}
-
 	Json::Value toJsonObj(){
 		Json::Value output;
 		init(output);
@@ -75,13 +67,6 @@ typedef struct vendor_specific_cmd : public IHciCommandFrame {
 		}
 	}
 
-	void print(){
-		//std::cout << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
-	}
 
 	Json::Value toJsonObj(){
 		Json::Value output;
@@ -121,13 +106,6 @@ typedef struct link_control_disconnect_cmd : public IHciCommandFrame {
 		this->reason = data[COMMAND_FRAME_OFFSET +3];
 	}
 
-	void print(){
-		std::cout << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
-	}
 
 	Json::Value toJsonObj(){
 		Json::Value output;
@@ -159,13 +137,6 @@ typedef struct link_control_inquiry_cmd : public IHciCommandFrame {
 		num_responses = data[COMMAND_FRAME_OFFSET + 3 ];
 	}
 
-	void print(){
-		std::cout << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
-	}
 
 	Json::Value toJsonObj(){
 		Json::Value output;
@@ -200,13 +171,6 @@ typedef struct le_read_remote_used_features_cmd : public IHciCommandFrame {
 		this->connection_handle = data[COMMAND_FRAME_OFFSET+1] + (data[COMMAND_FRAME_OFFSET+2]<<8);
 	}
 
-	void print(){
-		std::cout << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
-	}
 
 	Json::Value toJsonObj(){
 		Json::Value output;
@@ -260,13 +224,6 @@ typedef struct le_create_connection_cmd : public IHciCommandFrame {
 		this->maximum_ce_length = data[COMMAND_FRAME_OFFSET+23] + (data[COMMAND_FRAME_OFFSET+24]<<8);
 	}
 
-	void print(){
-		std::cout << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
-	}
 
 	Json::Value toJsonObj(){
 		Json::Value output;
@@ -312,13 +269,6 @@ typedef struct le_set_scan_parameters_cmd : public IHciCommandFrame {
 		this->scanning_filter_policy = data[COMMAND_FRAME_OFFSET+7];
 	}
 
-	void print(){
-		std::cout << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
-	}
 
 	Json::Value toJsonObj(){
 		Json::Value output;
@@ -351,13 +301,6 @@ typedef struct le_set_scan_enable_cmd : public IHciCommandFrame {
 		this->filter_duplicates = data[COMMAND_FRAME_OFFSET+2];
 	}
 
-	void print(){
-		std::cout << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
-	}
 
 	Json::Value toJsonObj(){
 		Json::Value output;
@@ -387,13 +330,6 @@ typedef struct le_set_advertising_data_cmd : public IHciCommandFrame {
 		}
 	}
 
-	void print(){
-		std::cout << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
-	}
 
 	Json::Value toJsonObj(){
 		Json::Value output;
@@ -445,13 +381,6 @@ typedef struct le_set_advertising_parameters_cmd : public IHciCommandFrame {
 		this->advertising_filter_policy = data[COMMAND_FRAME_OFFSET+15];
 	}
 
-	void print(){
-		std::cout << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
-	}
 
 	Json::Value toJsonObj(){
 		Json::Value output;
@@ -491,13 +420,6 @@ typedef struct write_default_link_policy_settings_cmd : public IHciCommandFrame 
 		default_link_policy_settings = data[COMMAND_FRAME_OFFSET+1] + (data[COMMAND_FRAME_OFFSET+2]<<8);
 	}
 
-	void print(){
-		std::cout << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
-	}
 
 	Json::Value toJsonObj(){
 		Json::Value output;
@@ -528,13 +450,6 @@ typedef struct informational_read_local_extended_features_cmd : public IHciComma
 		page_number = data[COMMAND_FRAME_OFFSET];
 	}
 
-	void print(){
-		std::cout << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
-	}
 
 	Json::Value toJsonObj(){
 		Json::Value output;
@@ -575,13 +490,6 @@ typedef struct ctrl_bsb_write_local_name_cmd : public IHciCommandFrame {
 		}
 	}
 
-	void print(){
-		std::cout << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
-	}
 
 	Json::Value toJsonObj(){
 		Json::Value output;
@@ -612,13 +520,6 @@ typedef struct ctrl_bsb_set_event_filter_cmd : public IHciCommandFrame {
 		
 	}
 
-	void print(){
-		std::cout << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
-	}
 
 	Json::Value toJsonObj(){
 		Json::Value output;
@@ -643,13 +544,6 @@ typedef struct ctrl_bsb_read_class_of_device_cmd : public IHciCommandFrame {
 		parameter_total_length = data[COMMAND_FRAME_OFFSET];
 	}
 
-	void print(){
-		std::cout << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
-	}
 
 	Json::Value toJsonObj(){
 		Json::Value output;
@@ -671,13 +565,6 @@ typedef struct ctrl_bsb_write_class_of_device_cmd : public IHciCommandFrame {
 		device_class = data[COMMAND_FRAME_OFFSET+1] + (data[COMMAND_FRAME_OFFSET+2]<<8) + (data[COMMAND_FRAME_OFFSET+3]<<16);
 	}
 
-	void print(){
-		std::cout << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
-	}
 
 	Json::Value toJsonObj(){
 		Json::Value output;
@@ -702,13 +589,6 @@ typedef struct ctrl_bsb_write_inquiry_mode_cmd : public IHciCommandFrame {
 		parameter_total_length = data[COMMAND_FRAME_OFFSET];
 	}
 
-	void print(){
-		std::cout << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
-	}
 
 	Json::Value toJsonObj(){
 		Json::Value output;
@@ -735,13 +615,6 @@ typedef struct ctrl_bsb_write_le_host_support_cmd : public IHciCommandFrame {
 		simultaneous_le_host = data[COMMAND_FRAME_OFFSET+2];
 	}
 
-	void print(){
-		std::cout << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
-	}
 
 	Json::Value toJsonObj(){
 		Json::Value output;
@@ -769,13 +642,6 @@ typedef struct ctrl_bsb_write_inquiry_scan_activity_cmd : public IHciCommandFram
 		inquiry_scan_window =data[COMMAND_FRAME_OFFSET+3] + (data[COMMAND_FRAME_OFFSET+4]<<8);
 	}
 
-	void print(){
-		std::cout << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
-	}
 
 	Json::Value toJsonObj(){
 		Json::Value output;
@@ -801,13 +667,6 @@ typedef struct ctrl_bsb_write_voice_settings_cmd : public IHciCommandFrame {
 		voice_settings = data[COMMAND_FRAME_OFFSET+1] + (data[COMMAND_FRAME_OFFSET+2]<<8);
 	}
 
-	void print(){
-		std::cout << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
-	}
 
 	Json::Value toJsonObj(){
 		Json::Value output;
@@ -840,13 +699,6 @@ typedef struct ctrl_bsb_write_iac_lap_cmd : public IHciCommandFrame {
 		}
 	}
 
-	void print(){
-		std::cout << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
-	}
 
 	Json::Value toJsonObj(){
 		Json::Value output;
@@ -876,13 +728,6 @@ typedef struct ctrl_bsb_write_page_scan_type_cmd : public IHciCommandFrame {
 		page_scan_type = data[COMMAND_FRAME_OFFSET+1];
 	}
 
-	void print(){
-		std::cout << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
-	}
 
 	Json::Value toJsonObj(){
 		Json::Value output;
@@ -907,13 +752,6 @@ typedef struct ctrl_bsb_write_simple_pairing_mode_cmd : public IHciCommandFrame 
 		simple_pairing_mode = data[COMMAND_FRAME_OFFSET+1];
 	}
 
-	void print(){
-		std::cout << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
-	}
 
 	Json::Value toJsonObj(){
 		Json::Value output;
@@ -942,13 +780,6 @@ typedef struct ctrl_bsb_write_extended_inquiry_response_cmd : public IHciCommand
 		}
 	}
 
-	void print(){
-		std::cout << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
-	}
 
 	Json::Value toJsonObj(){
 		Json::Value output;
@@ -978,13 +809,6 @@ typedef struct ctrl_bsb_write_scan_enable_cmd : public IHciCommandFrame {
 		scan_enable = data[COMMAND_FRAME_OFFSET+1];
 	}
 
-	void print(){
-		std::cout << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
-	}
 
 	Json::Value toJsonObj(){
 		Json::Value output;
@@ -1009,13 +833,6 @@ typedef struct ctrl_bsb_write_inquiry_scan_type_cmd : public IHciCommandFrame {
 		scan_type = data[COMMAND_FRAME_OFFSET+1];
 	}
 
-	void print(){
-		std::cout << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
-	}
 
 	Json::Value toJsonObj(){
 		Json::Value output;
@@ -1043,13 +860,6 @@ typedef struct ctrl_bsb_set_event_mask_cmd : public IHciCommandFrame {
 		}
 	}
 
-	void print(){
-		std::cout << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
-	}
 
 	Json::Value toJsonObj(){
 		Json::Value output;
@@ -1078,13 +888,6 @@ typedef struct ctrl_bsb_write_page_timeout_cmd : public IHciCommandFrame {
 		page_timeout = data[COMMAND_FRAME_OFFSET+1] + (data[COMMAND_FRAME_OFFSET+2]<<8);
 	}
 
-	void print(){
-		std::cout << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
-	}
 
 	Json::Value toJsonObj(){
 		Json::Value output;
@@ -1115,13 +918,6 @@ typedef struct ctrl_bsb_host_buffer_size_cmd : public IHciCommandFrame {
 		host_total_num_synchronous_data_packet = data[COMMAND_FRAME_OFFSET+6] + (data[COMMAND_FRAME_OFFSET+7]<<8);
 	}
 
-	void print(){
-		std::cout << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
-	}
 
 	Json::Value toJsonObj(){
 		Json::Value output;

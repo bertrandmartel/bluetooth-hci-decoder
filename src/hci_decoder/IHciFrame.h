@@ -48,7 +48,7 @@ public:
 	 *      convert frame information to beautiful json format
 	 * @return
 	 */
-	virtual std::string toJson(){
+	virtual std::string toJson(bool beautify){
 		return "{}";
 	};
 

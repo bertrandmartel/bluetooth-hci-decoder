@@ -63,11 +63,11 @@ typedef struct hci_acl : IHciFrame{
 	}
 
 	void print(){
-		std::cout << toJson().data() << std::endl;
+		std::cout << toJson(true).data() << std::endl;
 	}
 
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
+	std::string toJson(bool beautify){
+		return convert_json_to_string(beautify,toJsonObj());
 	}
 
 	Json::Value toJsonObj(){

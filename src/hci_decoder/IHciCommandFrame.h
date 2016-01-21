@@ -71,6 +71,14 @@ public:
 		return HCI_TYPE_COMMAND;
 	}
 
+	void print(){
+		std::cout << toJson(true).data() << std::endl;
+	}
+
+	std::string toJson(bool beautify){
+		return convert_json_to_string(beautify,toJsonObj());
+	}
+
 	/**
 	 * @brief getParamterTotalLength
 	 *      number in bytes of total parameter length
