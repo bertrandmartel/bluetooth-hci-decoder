@@ -34,8 +34,6 @@
 #include <iostream>
 #include <json/json.h>
 
-#define BEAUTIFY_JSON        1
-
 //excluding command code decode from parameter length field
 #define COMMAND_FRAME_OFFSET 3
 
@@ -163,9 +161,9 @@ inline uint8_t get_ocf(uint8_t msb,uint8_t lsb){
 /**
  * convert Json value to string without linefeed / indent
  */
-inline std::string convert_json_to_string(Json::Value output){
+inline std::string convert_json_to_string(bool beautify,Json::Value output){
 
-	if (BEAUTIFY_JSON==0){
+	if (!beautify){
 		Json::StreamWriterBuilder builder;
 		builder.settings_["indentation"] = "";
 		return Json::writeString(builder, output);

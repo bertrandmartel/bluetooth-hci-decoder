@@ -183,14 +183,6 @@ typedef struct le_meta_advertising_report_event : public IHciEventFrame {
 		}
 	}
 
-	void print(){
-		std::cout << "> HCI_EVENT_LE_ADVERTISING_REPORT : \n" << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
-	}
-
 	Json::Value toJsonObj(){
 
 		Json::Value output;
@@ -233,14 +225,6 @@ typedef struct command_status  : public IHciEventFrame{
 		this->num_hci_packet = data[EVENT_FRAME_OFFSET + 2];
 		ogf = get_ogf(data[EVENT_FRAME_OFFSET + 4]);
 		ocf = get_ocf(data[EVENT_FRAME_OFFSET + 4],data[EVENT_FRAME_OFFSET + 3]);
-	}
-
-	void print(){
-		std::cout << "> COMMAND_STATUS Event : \n" << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
 	}
 
 	Json::Value toJsonObj(){
@@ -369,14 +353,6 @@ typedef struct number_of_completed_packet_event  : public IHciEventFrame{
 		}
 	}
 
-	void print(){
-		std::cout << "> NUMBER_OF_COMPLETED_PACKET_EVENT : \n" << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
-	}
-
 	Json::Value toJsonObj(){
 
 		Json::Value output;
@@ -412,14 +388,6 @@ typedef struct disconnection_complete_event  : public IHciEventFrame{
 		this->reason = data[EVENT_FRAME_OFFSET+4];
 	}
 
-	void print(){
-		std::cout << "> DISCONNECTION_COMPLETE_EVENT : \n" << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
-	}
-
 	Json::Value toJsonObj(){
 
 		Json::Value output;
@@ -443,14 +411,6 @@ typedef struct inquiry_complete_event  : public IHciEventFrame{
 		this->event_code = HCI_EVENT_INQUIRY_COMPLETE;
 		this->parameter_total_length = data[EVENT_FRAME_OFFSET];
 		this->status = data[EVENT_FRAME_OFFSET+1];
-	}
-
-	void print(){
-		std::cout << "> INQUIRY_EVENT : \n" << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
 	}
 
 	Json::Value toJsonObj(){
@@ -495,14 +455,6 @@ typedef struct extended_inquiry_result_event : public IHciEventFrame{
 		for (unsigned int i = 0 ; i< 240;i++){
 			extended_inquiry_response.push_back(data[EVENT_FRAME_OFFSET + 16]);
 		}
-	}
-
-	void print(){
-		std::cout << "> EXTENDED INQUIRY_EVENT : \n" << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
 	}
 
 	Json::Value toJsonObj(){
@@ -565,14 +517,6 @@ typedef struct le_meta_connection_complete_event : public IHciEventFrame {
 		this->conn_latency = (data[EVENT_FRAME_OFFSET+15]<<8) + data[EVENT_FRAME_OFFSET+16];
 		this->supervision_timeout = (data[EVENT_FRAME_OFFSET+17]<<8) + data[EVENT_FRAME_OFFSET+18];
 		this->master_clock_accuracy = data[EVENT_FRAME_OFFSET+19];
-	}
-
-	void print(){
-		std::cout << "> LE_CONNECTION_COMPLETE : \n" << toJson().data() << std::endl;
-	}
-
-	std::string toJson(){
-		return convert_json_to_string(toJsonObj());
 	}
 
 	Json::Value toJsonObj(){

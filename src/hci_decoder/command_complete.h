@@ -47,7 +47,7 @@ public:
 
 	void print();
 
-	std::string toJson();
+	std::string toJson(bool beautify);
 
 	Json::Value toJsonObj();
 

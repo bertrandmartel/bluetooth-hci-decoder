@@ -356,7 +356,7 @@ CommandComplete::~CommandComplete(){
 
 void CommandComplete::print(){
 
-	std::cout << "> COMMAND_COMPLETE : \n" << toJson().data() << std::endl;
+	std::cout << "> COMMAND_COMPLETE : \n" << toJson(true).data() << std::endl;
 
 }
 
@@ -455,6 +455,6 @@ Json::Value CommandComplete::toJsonObj(){
 	return output;
 }
 
-std::string CommandComplete::toJson(){
-	return convert_json_to_string(toJsonObj());
+std::string CommandComplete::toJson(bool beautify){
+	return convert_json_to_string(beautify,toJsonObj());
 }

@@ -53,6 +53,13 @@ public:
 		return event_code;
 	}
 
+	void print(){
+		std::cout << "> " << HCI_PACKET_TYPE_STRING_ENUM.at(HCI_TYPE_EVENT) << " : \n" << toJson(true).data() << std::endl;
+	}
+
+	std::string toJson(bool beautify){
+		return convert_json_to_string(beautify,toJsonObj());
+	}
 	/**
 	 * @brief getPacketType
 	 *      retrieve HCI Packet type (HCI_COMMAND / HCI_ACL_DATA / HCI_SCO_DATA / HCI_EVENT)
