@@ -304,6 +304,21 @@ CommandComplete::CommandComplete(const std::vector<char> &data){
 						response_frame = new status_response_cmd(return_parameters);
 						break;
 					}
+					case HCI_CMD_OCF_LE_SET_EVENT_MASK_COMMAND :
+					{
+						response_frame = new status_response_cmd(return_parameters);
+						break;
+					}
+					case HCI_CMD_OCF_LE_SET_RANDOM_ADDRESS_COMMAND :
+					{
+						response_frame = new status_response_cmd(return_parameters);
+						break;
+					}
+					case HCI_CMD_OCF_LE_REMOVE_DEVICE_FROM_RESOLVING_LIST_COMMAND :
+					{
+						response_frame = new status_response_cmd(return_parameters);
+						break;
+					}
 					case HCI_CMD_OCF_LE_SET_SCAN_ENABLE_COMMAND:
 					{
 						response_frame = new status_response_cmd(return_parameters);

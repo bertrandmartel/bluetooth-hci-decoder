@@ -342,6 +342,21 @@ IHciFrame* HciDecoder::decode(std::vector<char> data){
 							frame = new le_set_scan_parameters_cmd_t(data);
 							break;
 						}
+						case HCI_CMD_OCF_LE_SET_EVENT_MASK_COMMAND :
+						{
+							frame = new le_set_event_mask_cmd_t(data);
+							break;
+						}
+						case HCI_CMD_OCF_LE_SET_RANDOM_ADDRESS_COMMAND :
+						{
+							frame = new le_set_random_address_cmd_t(data);
+							break;
+						}
+						case HCI_CMD_OCF_LE_REMOVE_DEVICE_FROM_RESOLVING_LIST_COMMAND:
+						{
+							frame = new le_remove_device_from_resolving_list_cmd_t(data);
+							break;
+						}
 						case HCI_CMD_OCF_LE_SET_SCAN_ENABLE_COMMAND:
 						{
 							frame = new le_set_scan_enable_cmd_t(data);
