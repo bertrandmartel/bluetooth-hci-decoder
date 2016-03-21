@@ -9,30 +9,23 @@
 The JsonCpp library's source code, including accompanying documentation, 
 tests and demonstration applications, are licensed under the following
 conditions...
-
 The author (Baptiste Lepilleur) explicitly disclaims copyright in all 
 jurisdictions which recognize such a disclaimer. In such jurisdictions, 
 this software is released into the Public Domain.
-
 In jurisdictions which do not recognize Public Domain property (e.g. Germany as of
 2010), this software is Copyright (c) 2007-2010 by Baptiste Lepilleur, and is
 released under the terms of the MIT License (see below).
-
 In jurisdictions which recognize Public Domain property, the user of this 
 software may choose to accept it either as 1) Public Domain, 2) under the 
 conditions of the MIT License (see below), or 3) under the terms of dual 
 Public Domain/MIT License conditions described here, as they choose.
-
 The MIT License is about as close to Public Domain as a license can get, and is
 described in clear, concise terms at:
-
    http://en.wikipedia.org/wiki/MIT_License
    
 The full text of the MIT License follows:
-
 ========================================================================
 Copyright (c) 2007-2010 Baptiste Lepilleur
-
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
 files (the "Software"), to deal in the Software without
@@ -40,10 +33,8 @@ restriction, including without limitation the rights to use, copy,
 modify, merge, publish, distribute, sublicense, and/or sell copies
 of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
-
 The above copyright notice and this permission notice shall be
 included in all copies or substantial portions of the Software.
-
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -54,14 +45,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ========================================================================
 (END LICENSE TEXT)
-
 The MIT license is compatible with both the GPL and commercial
 software, affording one all of the rights of Public Domain with the
 minor nuisance of being required to keep the above copyright notice
 and license text in the source code. Note also that by accepting the
 Public Domain "license" you can re-license your copy using whatever
 license you like.
-
 */
 
 // //////////////////////////////////////////////////////////////////////
@@ -635,13 +624,11 @@ public:
 
 public:
   /** \brief Create a default Value of the given type.
-
     This is a very useful constructor.
     To create an empty array, pass arrayValue.
     To create an empty object, pass objectValue.
     Another Value can then be set to this one by assignment.
 This is useful since clear() and resize() will not alter types.
-
     Examples:
 \code
 Json::Value null_value; // null
@@ -660,7 +647,6 @@ Json::Value obj_value(Json::objectValue); // {}
   Value(const char* value); ///< Copy til first 0. (NULL causes to seg-fault.)
   Value(const char* begin, const char* end); ///< Copy all, incl zeroes.
   /** \brief Constructs a value from a static string.
-
    * Like other value string constructor but do not duplicate the string for
    * internal storage. The given string must remain alive after the call to this
    * constructor.
@@ -819,7 +805,6 @@ Json::Value obj_value(Json::objectValue); // {}
   const Value& operator[](const std::string& key) const;
   /** \brief Access an object value by name, create a null member if it does not
    exist.
-
    * If the object has no entry for that name, then the member name used to store
    * the new entry is not duplicated.
    * Example of use:
@@ -877,7 +862,6 @@ Json::Value obj_value(Json::objectValue); // {}
   /// but 'key' is null-terminated.
   bool removeMember(const char* key, Value* removed);
   /** \brief Remove the named map member.
-
       Update 'removed' iff removed.
       \param key may contain embedded nulls.
       \return true iff removed (no exceptions)
@@ -886,7 +870,6 @@ Json::Value obj_value(Json::objectValue); // {}
   /// Same as removeMember(std::string const& key, Value* removed)
   bool removeMember(const char* begin, const char* end, Value* removed);
   /** \brief Remove the indexed array element.
-
       O(n) expensive operations.
       Update 'removed' iff removed.
       \return true iff removed (no exceptions)
@@ -1527,7 +1510,6 @@ public:
 };  // CharReader
 
 /** \brief Build a CharReader implementation.
-
 Usage:
 \code
   using namespace Json;
@@ -1572,7 +1554,6 @@ public:
     - `"allowSpecialFloats": false or true`
       - If true, special float values (NaNs and infinities) are allowed 
         and their values are lossfree restorable.
-
     You can examine 'settings_` yourself
     to see the defaults. You can also write and read them just like any
     JSON Value.
@@ -1618,9 +1599,7 @@ bool JSON_API parseFromStream(
     Value* root, std::string* errs);
 
 /** \brief Read from 'sin' into 'root'.
-
  Always keep comments from the input JSON.
-
  This can be used to read a file into a particular sub-object.
  For example:
  \code
@@ -1691,7 +1670,6 @@ namespace Json {
 class Value;
 
 /**
-
 Usage:
 \code
   using namespace Json;
@@ -1736,7 +1714,6 @@ std::string JSON_API writeString(StreamWriter::Factory const& factory, Value con
 
 
 /** \brief Build a StreamWriter implementation.
-
 Usage:
 \code
   using namespace Json;
@@ -1769,7 +1746,6 @@ public:
       - If true, outputs non-finite floating point values in the following way:
         NaN values as "NaN", positive infinity as "Infinity", and negative infinity
         as "-Infinity".
-
     You can examine 'settings_` yourself
     to see the defaults. You can also write and read them just like any
     JSON Value.

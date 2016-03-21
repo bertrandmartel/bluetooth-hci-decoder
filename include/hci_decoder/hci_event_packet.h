@@ -449,8 +449,8 @@ typedef struct extended_inquiry_result_event : public IHciEventFrame{
 		bd_addr.address[5]=data[EVENT_FRAME_OFFSET + 2];
 		page_repetition_mode = data[EVENT_FRAME_OFFSET + 8];
 		//1 octet reserved here
-		class_of_device = data[EVENT_FRAME_OFFSET + 10] + data[EVENT_FRAME_OFFSET + 11 ] << 8 + data[EVENT_FRAME_OFFSET + 12 ] << 16 ;
-		clock_offset = data[EVENT_FRAME_OFFSET + 13] + data[EVENT_FRAME_OFFSET + 14] << 8;
+		class_of_device = data[EVENT_FRAME_OFFSET + 10] + (data[EVENT_FRAME_OFFSET + 11 ] << 8) + (data[EVENT_FRAME_OFFSET + 12 ] << 16) ;
+		clock_offset = data[EVENT_FRAME_OFFSET + 13] + (data[EVENT_FRAME_OFFSET + 14] << 8);
 		rssi = data[EVENT_FRAME_OFFSET + 15];
 		for (unsigned int i = 0 ; i< 240;i++){
 			extended_inquiry_response.push_back(data[EVENT_FRAME_OFFSET + 16]);
