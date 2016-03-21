@@ -6,6 +6,8 @@
 
 Lightweight Bluetooth HCI decoder library parsing individually HCI frames into JSON format
 
+<a href="CHANGELOG.md">ChangeLogs can be found here</a>
+
 ## Documentation
 
 http://akinaru.github.io/bluetooth-hci-decoder
