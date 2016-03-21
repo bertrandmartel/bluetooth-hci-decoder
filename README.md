@@ -1,28 +1,31 @@
-# C++ Bluetooth HCI decoder library #
+# Bluetooth HCI decoder library #
 
-
+[![Build Status](https://travis-ci.org/akinaru/bluetooth-hci-decoder.svg?branch=master)](https://travis-ci.org/akinaru/bluetooth-hci-decoder)
+[![Download](https://api.bintray.com/packages/akinaru/generic/bluetooth-hci-decoder/images/download.svg) ](https://bintray.com/akinaru/generic/bluetooth-hci-decoder/_latestVersion)
+[![License](http://img.shields.io/:license-mit-blue.svg)](LICENSE.md)
 
 Lightweight Bluetooth HCI decoder library parsing individually HCI frames into JSON format
 
 
-##Setup & Build
+## Setup & Build
 
 ```
 git submodule init
 git submodule update
+cmake .
 make
 ```
 
-Library release under `build-hcidecoder-X.X` directory.
+library release is located under `lib` directory.
 
-##Test
+## Test
 
 A small test program is provided extracting HCI frames from a btsnoop file decoded with https://github.com/akinaru/btsnoop-decoder
 
-Syntax : ``./hci-decoder-test <snoop_file>``
+Syntax : ``./bthci-test <btsnoop_file>``
 
 ```
-./build-hcidecoder-X.X/hci-decoder-test ../snoop_files/btsnoop_hci.log
+./bin/bthci-test ./snoop_files/btsnoop_hci.log
 ```
 
 ##Decoding
@@ -42,7 +45,7 @@ IHciFrame * frame = hci_decoder.decode(packet);
 
 <i>`IHciFrame * frame` can be null if HCI frame is not currently supported</i>
 
-###Architecture
+### Architecture
 
 ![architecture](img/arch.png)
 
@@ -284,16 +287,19 @@ Common fields for all HCI Command frames:
 
 | HCI Command string                                               | HCI command value |
 |--------------------|-------------------|
-| HCI_CMD_OCF_LE_SET_SCAN_PARAMETERS_COMMAND           | 0x000B |
-| HCI_CMD_OCF_LE_SET_ADVERTISING_PARAMETERS_COMMAND    | 0x0006 |
-| HCI_CMD_OCF_LE_SET_SCAN_ENABLE_COMMAND               | 0x000C |
-| HCI_CMD_OCF_LE_CREATE_CONNECTION_COMMAND             | 0x000D |
-| HCI_CMD_OCF_LE_CLEAR_WHITE_LIST_COMMAND              | 0x0010 |
-| HCI_CMD_OCF_LE_READ_REMOTE_USED_FEATURES_COMMAND     | 0x0016 |
-| HCI_CMD_OCF_LE_READ_WHITE_LIST_SIZE_COMMAND          | 0x000F |
-| HCI_CMD_OCF_LE_SET_ADVERTISING_DATA_COMMAND          | 0x0008 |
-| HCI_CMD_OCF_LE_READ_BUFFER_SIZE_COMMAND              | 0x0002 |
-| HCI_CMD_OCF_LE_READ_LOCAL_SUPPORTED_FEATURES_COMMAND | 0x0003 |
+| HCI_CMD_OCF_LE_SET_SCAN_PARAMETERS_COMMAND                 | 0x000B |
+| HCI_CMD_OCF_LE_SET_ADVERTISING_PARAMETERS_COMMAND          | 0x0006 |
+| HCI_CMD_OCF_LE_SET_SCAN_ENABLE_COMMAND                     | 0x000C |
+| HCI_CMD_OCF_LE_CREATE_CONNECTION_COMMAND                   | 0x000D |
+| HCI_CMD_OCF_LE_CLEAR_WHITE_LIST_COMMAND                    | 0x0010 |
+| HCI_CMD_OCF_LE_READ_REMOTE_USED_FEATURES_COMMAND           | 0x0016 |
+| HCI_CMD_OCF_LE_READ_WHITE_LIST_SIZE_COMMAND                | 0x000F |
+| HCI_CMD_OCF_LE_SET_ADVERTISING_DATA_COMMAND                | 0x0008 |
+| HCI_CMD_OCF_LE_READ_BUFFER_SIZE_COMMAND                    | 0x0002 |
+| HCI_CMD_OCF_LE_READ_LOCAL_SUPPORTED_FEATURES_COMMAND       | 0x0003 |
+| HCI_CMD_OCF_LE_SET_EVENT_MASK_COMMAND                      | 0x0001 |
+| HCI_CMD_OCF_LE_SET_RANDOM_ADDRESS_COMMAND                  | 0x0005 |
+| HCI_CMD_OCF_LE_REMOVE_DEVICE_FROM_RESOLVING_LIST_COMMAND   | 0x001C |
 
 <hr/>
 
