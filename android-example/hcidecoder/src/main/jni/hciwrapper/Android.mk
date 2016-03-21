@@ -7,8 +7,8 @@ LOCAL_MODULE := hciwrapper
 LOCAL_CFLAGS := -std=gnu++11
 LOCAL_CPPFLAGS += -fexceptions
 
-INCLUDE_SRC_DIR       := ../../../../../../src
-INCLUDE_EXTERNAL_DIR  := ../../../../../../external_libs/include
+INCLUDE_SRC_DIR       := ../../../../../../include
+INCLUDE_EXTERNAL_DIR  := ../../../../../../btsnoop-decoder/include
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/$(INCLUDE_SRC_DIR)
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/${INCLUDE_EXTERNAL_DIR}
