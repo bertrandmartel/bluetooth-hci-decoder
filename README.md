@@ -6,6 +6,9 @@
 
 Lightweight Bluetooth HCI decoder library parsing individually HCI frames into JSON format
 
+## Documentation
+
+http://akinaru.github.io/bluetooth-hci-decoder
 
 ## Setup & Build
 
