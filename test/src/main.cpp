@@ -45,6 +45,11 @@ void catch_signint(int sig){
 
 int main(int argc, char *argv[])
 {
+	if (argc <= 1){
+		cerr << "you must provide btsnoop file path " << endl;
+		return -1;
+	}
+
 	struct sigaction sigIntHandler;
 
 	sigIntHandler.sa_handler = catch_signint;
@@ -58,13 +63,13 @@ int main(int argc, char *argv[])
 	parser.addSnoopListener(&monitor);
 
 	//parse streaming file
-	bool success = parser.decode_streaming_file("/home/abathur/Bureau/open_source/bluetooth-hci-viewer/android/hcidecoder/src/main/jni/btsnoop_hci.log");
+	bool success = parser.decode_streaming_file(argv[1]);
 	if (!success)
 		cout << "file reading error occured" << endl;
 
 
 	/*
-	std::string recordFile("/home/abathur/Bureau/open_source/bluetooth-hci-viewer/android/hcidecoder/src/main/jni/btsnoop_hci.log");
+	std::string recordFile(argv[1]);
 	BtSnoopTask decoder(recordFile);
 
 	decoder.decode_file();

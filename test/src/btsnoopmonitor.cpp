@@ -61,8 +61,7 @@ void BtSnoopMonitor::onSnoopPacketReceived(BtSnoopFileInfo fileInfo,BtSnoopPacke
 	if (frame!=0){
 
 		if (frame->getPacketType() == HCI_TYPE_ACL_DATA){
-
-			//cout << frame->toJson() << endl;
+			cout << frame->toJson(true) << endl;
 		}
 	}
     //packet.printInfo();
