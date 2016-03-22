@@ -395,6 +395,48 @@ Common fields for all HCI Command frames:
 
 <hr/>
 
+* Advertising packets type
+
+| HCI subevent string                              | HCI subevent value | fully decoded |
+|--------------------------------------------------|-------------------|----------------|
+| ADVERTIZING_TYPE_UNKNOWN                                   | 0x00 |                   |
+| ADVERTIZING_TYPE_FLAGS                                     | 0x01 |  X                |
+| ADVERTIZING_TYPE_INCOMPLETE_LIST_16BIT_SERVICE_CLASS_UUID  | 0x02 |                   |
+| ADVERTIZING_TYPE_COMPLETE_LIST_16BIT_SERVICE_CLASS_UUID    | 0x03 |                   |
+| ADVERTIZING_TYPE_INCOMPLETE_LIST_32BIT_SERVICE_CLASS_UUID  | 0x04 |                   |
+| ADVERTIZING_TYPE_COMPLETE_LIST_32BIT_SERVICE_CLASS_UUID    | 0x05 |                   |
+| ADVERTIZING_TYPE_INCOMPLETE_LIST_128BIT_SERVICE_CLASS_UUID | 0x06 |                   |
+| ADVERTIZING_TYPE_COMPLETE_LIST_128BIT_SERVICE_CLASS_UUID   | 0x07 |                   |
+| ADVERTIZING_TYPE_SHORTENED_LOCAL_NAME                      | 0x08 | X                 |
+| ADVERTIZING_TYPE_COMPLETE_LOCAL_NAME                       | 0x09 | X                 |
+| ADVERTIZING_TYPE_TX_POWER_LEVEL                            | 0x0A | X                 |
+| ADVERTIZING_TYPE_CLASS_OF_DEVICE                           | 0x0D |                   |
+| ADVERTIZING_TYPE_SIMPLE_PAIRING_HASH_C                     | 0x0E |                   |
+| ADVERTIZING_TYPE_SIMPLE_PAIRING_RANDOMIZER_R               | 0x0F |                   |
+| ADVERTIZING_TYPE_DEVICE_ID                                 | 0x10 |                   |
+| ADVERTIZING_TYPE_SECURITY_MANAGER_OUT_OF_BAND_FLAGS        | 0x11 |                   |
+| ADVERTIZING_TYPE_SLAVE_CONNECTION_INTERVAL_RANGE           | 0x12 |                   |
+| ADVERTIZING_TYPE_LIST_16BIT_SOLICITATION_UUIDS             | 0x14 |                   |
+| ADVERTIZING_TYPE_LIST_32BIT_SOLICITATION_UUIDS             | 0x1F |                   |
+| ADVERTIZING_TYPE_LIST_128BIT_SOLICITATION_UUIDS            | 0x15 |                   |
+| ADVERTIZING_TYPE_SERVICE_DATA_16BIT                        | 0x16 |                   |
+| ADVERTIZING_TYPE_SERVICE_DATA_32BIT                        | 0x20 |                   |
+| ADVERTIZING_TYPE_SERVICE_DATA_128BIT                       | 0x21 |                   |
+| ADVERTIZING_TYPE_LE_SECURE_CONNECTIONS_CONFIRMATION_VALUE  | 0x22 |                   |
+| ADVERTIZING_TYPE_LE_SECURE_CONNECTIONS_RANDOM_VALUE        | 0x23 |                   |
+| ADVERTIZING_TYPE_PUBLIC_TARGET_ADDRESS                     | 0x17 |                   |
+| ADVERTIZING_TYPE_RANDOM_TARGET_ADDRESS                     | 0x18 |                   |
+| ADVERTIZING_TYPE_APPEARANCE                                | 0x19 |                   |
+| ADVERTIZING_TYPE_ADVERTIZING_INTERVAL                      | 0x1A |                   |
+| ADVERTIZING_TYPE_LE_BLUETOOTH_DEVICE_ADDRESS               | 0x1B |                   |
+| ADVERTIZING_TYPE_LE_ROLE                                   | 0x1C |                   |
+| ADVERTIZING_TYPE_SIMPLE_PAIRING_HASH                       | 0x1D |                   |
+| ADVERTIZING_TYPE_SIMPLE_PAIRING_RANDOMIZER                 | 0x1E |                   |
+| ADVERTIZING_TYPE_INFORMATION_DATA_3D                       | 0x3D |                   |
+| ADVERTIZING_TYPE_MANUFACTURER_SPECIFIC_DATA                | 0xFF | X                 |
+
+<hr/>
+
 ##Android integration
 
 An example using HCI decoder library is provided in `android-example` directory.
