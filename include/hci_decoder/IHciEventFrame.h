@@ -1,7 +1,7 @@
 /************************************************************************************
  * The MIT License (MIT)                                                            *
  *                                                                                  *
- * Copyright (c) 2015 Bertrand Martel                                               *
+ * Copyright (c) 2016 Bertrand Martel                                               *
  *                                                                                  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy     * 
  * of this software and associated documentation files (the "Software"), to deal    * 
@@ -54,6 +54,10 @@ public:
 		return event_code;
 	}
 
+	LE_SUBEVENT_ENUM getSubEventCode(){
+		return subevent_code;
+	}
+
 	void print(){
 		std::cout << "> " << HCI_PACKET_TYPE_STRING_ENUM.at(HCI_TYPE_EVENT) << " : \n" << toJson(true).data() << std::endl;
 	}
@@ -98,6 +102,9 @@ protected:
 
 	/*event code*/
 	EVENT_ENUM event_code;
+
+	/*subevent code*/
+	LE_SUBEVENT_ENUM subevent_code;
 
 	/*parameters length*/
 	uint8_t parameter_total_length;

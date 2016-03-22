@@ -21,22 +21,113 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN        * 
  * THE SOFTWARE.                                                                    * 
  ************************************************************************************/
+
 /**
-	hci_ogf.h
-	list of HCI LE SubEvent
+	IAdStructureFrame.h
+	Advertizing structure frame
 
 	@author Bertrand Martel
 	@version 1.0
 */
-E(HCI_EVENT_LE_CONNECTION_COMPLETE                 , 0x01)
-E(HCI_EVENT_LE_ADVERTISING_REPORT                  , 0x02)
-E(HCI_EVENT_LE_CONNECTION_UPDATE_COMPLETE          , 0x03)
-E(HCI_EVENT_LE_READ_REMOTE_USED_FEATURES_COMPLETE  , 0x04)
-E(HCI_EVENT_LE_LONG_TERM_KEY_REQUEST               , 0x05)
-E(HCI_EVENT_LE_REMOTE_CONNECTION_PARAMETER_REQUEST , 0x06)
-E(HCI_EVENT_LE_DATA_LENGTH_CHANGE                  , 0x07)
-E(HCI_EVENT_LE_READ_LOCAL_P256_PUBLIC_KEY_COMPLETE , 0x08)
-E(HCI_EVENT_LE_GENERATE_DHKEY_COMPLETE             , 0x09)
-E(HCI_EVENT_LE_ENHANCED_CONNECTION_COMPLETE        , 0x0A)
-E(HCI_EVENT_LE_DIRECT_ADVERTISING_REPORT           , 0x0B)
-#undef E
+#ifndef IADSTRUCTUREFRAME_H
+#define IADSTRUCTUREFRAME_H
+
+#include "hci_decoder/hci_global.h"
+#include "json/json.h"
+
+/**
+ * @brief IAdStructureFrame class
+ *      Interface defining all generic Ad Structure packets
+ *
+ */
+class IAdStructureFrame {
+
+public:
+
+	/**
+	 * @brief
+	 *      retrieve advertizing structure length
+	 * @return
+	 */
+	uint8_t getLength(){
+		return length;
+	}
+
+	/**
+	 * @brief
+	 *      retrieve advertizing packet type
+	 * @return
+	 */
+	ADVERTIZING_PACKET_TYPE_ENUM getType(){
+		return type;
+	}
+
+	void print(){
+		std::cout << toJson(true).data() << std::endl;
+	}
+
+	/**
+	 * @brief
+	 *      convert frame information to beautiful json format
+	 * @return
+	 */
+	virtual std::string toJson(bool beautify){
+		return "{}";
+	};
+
+	/**
+	 * @brief
+	 *      convert frame information to beautiful json format
+	 * @return
+	 */
+	virtual Json::Value toJsonObj(){
+		return Json::Value(Json::arrayValue);
+	};
+	
+	/**
+	 * @brief
+	 *      advertizing packet data
+	 * @return
+	 */
+	std::vector<uint8_t> getData(){
+		return data;
+	}
+
+	virtual ~IAdStructureFrame(){
+
+	}
+
+protected:
+
+	void init(Json::Value& output){
+		output["length"] = length;
+
+		Json::Value packet_type;
+		packet_type["code"] = type;
+		packet_type["value"] = ADVERTIZING_PACKET_STRING_ENUM.at(type);
+		output["type"] = packet_type;
+		
+		Json::Value data_json(Json::arrayValue);
+		for (unsigned int i = 0; i < length;i++){
+			data_json.append(data[i]);
+		}
+		output["data"] = data_json;
+	}
+
+	/**
+	 * advertising packet length (include type + data)
+	 */
+	uint8_t length;
+
+	/**
+	 * advertising packet type
+	 */
+	ADVERTIZING_PACKET_TYPE_ENUM  type;
+
+	/**
+	 * advertising packet data
+	 */
+	std::vector<uint8_t> data;
+};
+
+#endif // IADSTRUCTUREFRAME_H

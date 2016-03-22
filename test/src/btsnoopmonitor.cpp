@@ -34,6 +34,8 @@
 #include "btsnoop/ibtsnooplistener.h"
 #include "btsnoop/btsnoopfileinfo.h"
 #include "hci_decoder/hci_global.h"
+#include "hci_decoder/hci_event_packet.h"
+#include "hci_decoder/IHciEventFrame.h"
 
 using namespace std;
 
@@ -60,8 +62,20 @@ void BtSnoopMonitor::onSnoopPacketReceived(BtSnoopFileInfo fileInfo,BtSnoopPacke
 
 	if (frame!=0){
 
-		if (frame->getPacketType() == HCI_TYPE_ACL_DATA){
-			cout << frame->toJson(true) << endl;
+		if (frame->getPacketType() == HCI_TYPE_EVENT){
+
+			IHciEventFrame* event_frame = dynamic_cast<IHciEventFrame*> (frame);
+
+			if ((event_frame->getEventCode() == HCI_EVENT_LE_META) && (event_frame->getSubEventCode() == HCI_EVENT_LE_ADVERTISING_REPORT)){
+
+				le_meta_advertising_report_event *ad_report = dynamic_cast<le_meta_advertising_report_event*> (frame);
+
+				unsigned int i = 0;
+				for (i = 0; i  < ad_report->ad_report_items.size();i++){
+					cout << ad_report->ad_report_items[i]->toJson(true) << endl;
+				}
+				cout << "-----------------------------------" << endl;
+			}
 		}
 	}
     //packet.printInfo();

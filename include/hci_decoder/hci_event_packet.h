@@ -1,7 +1,7 @@
 /************************************************************************************
  * The MIT License (MIT)                                                            *
  *                                                                                  *
- * Copyright (c) 2015 Bertrand Martel                                               *
+ * Copyright (c) 2016 Bertrand Martel                                               *
  *                                                                                  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy     * 
  * of this software and associated documentation files (the "Software"), to deal    * 
@@ -32,6 +32,9 @@
 #define HCIEVENTPACKET_H
 
 #include <iostream>
+#include "hci_decoder/IHciEventFrame.h"
+#include "hci_decoder/IAdStructureFrame.h"
+#include "advertising_packet.h"
 
 /**********************************************************************/
 /**********************************************************************/
@@ -83,7 +86,7 @@ typedef struct {
 
 } le_advertising_report_event_t;
 
-struct advertising_report{
+struct advertising_report {
 
 	uint8_t event_type;                /* 1B | 0x00 : Connectable undirected advertising (ADV_IND)
 													 0x01 : Connectable directed advertising (ADV_DIRECT_IND)
@@ -101,9 +104,16 @@ struct advertising_report{
 
 	uint8_t data_length;               /* 1B | 0x00-0x1F : Length of the Data[i] field for each device which responded */
 
-	std::vector<uint8_t> data;              /* XB | Length_Data[i] octets of advertising or scan response data formatted */
+	std::vector<IAdStructureFrame*> data;              /* XB | Length_Data[i] octets of advertising or scan response data formatted */
 
 	uint8_t rssi;                      /* 1B | Range: -127 ≤ N ≤ +20; Units: dBm */
+
+	void clear(){
+		for (std::vector<IAdStructureFrame*>::iterator it = data.begin(); it != data.end();it++){
+			delete (*it);
+		}
+		data.clear();
+	}
 
 	Json::Value toJson(){
 
@@ -115,28 +125,29 @@ struct advertising_report{
 		output["rssi"] = rssi;
 
 		Json::Value data_array(Json::arrayValue);
-
-		unsigned int i = 0;
-		for (i = 0; i < data.size();i++){
-			data_array.append(data[i]);
+		for (unsigned int i = 0; i  < data.size();i++){
+			data_array.append(data[i]->toJsonObj());
 		}
 		output["data"] = data_array;
 
 		return output;
 	}
 
+	std::string toJson(bool beautify){
+		return convert_json_to_string(beautify,toJson());
+	}
 };
 
 /* HCI LE Meta sub event 0x02 : LE_ADVERTISING_REPORT*/
-typedef struct le_meta_advertising_report_event : public IHciEventFrame {
+typedef struct le_meta_advertising_report_event : public IHciEventFrame{
 
-	uint8_t  num_reports;                         /* 1B | 0x01-0x19 : Number of responses in event */
-	LE_SUBEVENT_ENUM subevent_code;               /*subevent code*/
-
+	uint8_t  num_reports;                              /* 1B | 0x01-0x19 : Number of responses in event */
+	
 	std::vector<advertising_report*> ad_report_items;  /* a list of advertising report*/
 
 	void clear(){
 		for (std::vector<advertising_report*>::iterator it = ad_report_items.begin(); it != ad_report_items.end();it++){
+			(*it)->clear();
 			delete (*it);
 		}
 		ad_report_items.clear();
@@ -147,7 +158,6 @@ typedef struct le_meta_advertising_report_event : public IHciEventFrame {
 		this->subevent_code = HCI_EVENT_LE_ADVERTISING_REPORT;
 		this->parameter_total_length = data[EVENT_FRAME_OFFSET];
 		this->num_reports = data[EVENT_FRAME_OFFSET+2];
-
 		unsigned int i = 0;
 		int offset = EVENT_FRAME_OFFSET+3;
 
@@ -170,12 +180,218 @@ typedef struct le_meta_advertising_report_event : public IHciEventFrame {
 
 			report->data_length = data[offset + 8];
 
-			std::vector<uint8_t> data_val;
+			std::vector<IAdStructureFrame*> data_val;
 
 			int j = 0;
+			char state=0;
+
+			uint8_t packet_type = 0;
+			std::vector<char> packet_data;
+			int length=0;
 			for (j=0;j < report->data_length;j++){
-				data_val.push_back(data[offset + 9 + j]);
+				if (state==0){
+					length = data[offset + 9 + j];
+					packet_data.clear();
+					state=1;
+				}
+				else if (state==1){
+					packet_type = data[offset + 9 + j];
+
+					state=2;
+					length--;
+				}
+				else{
+					packet_data.push_back(data[offset + 9 + j]);
+					length--;
+					if (length==0){
+
+						state = 0;
+						IAdStructureFrame * frame = 0;
+
+						switch (packet_type){
+							case ADVERTIZING_TYPE_FLAGS:
+							{
+								frame = new advertising_report_flags_t(ADVERTIZING_TYPE_FLAGS, packet_data);
+								break;
+							}
+							case ADVERTIZING_TYPE_INCOMPLETE_LIST_16BIT_SERVICE_CLASS_UUID:
+							{
+								frame = new advertising_common_t(ADVERTIZING_TYPE_INCOMPLETE_LIST_16BIT_SERVICE_CLASS_UUID, packet_data);
+								break;
+							}
+							case ADVERTIZING_TYPE_COMPLETE_LIST_16BIT_SERVICE_CLASS_UUID:
+							{
+								frame = new advertising_common_t(ADVERTIZING_TYPE_COMPLETE_LIST_16BIT_SERVICE_CLASS_UUID, packet_data);
+								break;
+							}
+							case ADVERTIZING_TYPE_INCOMPLETE_LIST_32BIT_SERVICE_CLASS_UUID:
+							{
+								frame = new advertising_common_t(ADVERTIZING_TYPE_INCOMPLETE_LIST_32BIT_SERVICE_CLASS_UUID, packet_data);
+								break;
+							}
+							case ADVERTIZING_TYPE_COMPLETE_LIST_32BIT_SERVICE_CLASS_UUID:
+							{
+								frame = new advertising_common_t(ADVERTIZING_TYPE_COMPLETE_LIST_32BIT_SERVICE_CLASS_UUID, packet_data);
+								break;
+							}
+							case ADVERTIZING_TYPE_INCOMPLETE_LIST_128BIT_SERVICE_CLASS_UUID:
+							{
+								frame = new advertising_common_t(ADVERTIZING_TYPE_INCOMPLETE_LIST_128BIT_SERVICE_CLASS_UUID, packet_data);
+								break;
+							}
+							case ADVERTIZING_TYPE_COMPLETE_LIST_128BIT_SERVICE_CLASS_UUID:
+							{
+								frame = new advertising_common_t(ADVERTIZING_TYPE_COMPLETE_LIST_128BIT_SERVICE_CLASS_UUID, packet_data);
+								break;
+							}
+							case ADVERTIZING_TYPE_SHORTENED_LOCAL_NAME:
+							{
+								frame = new advertising_shortened_local_name_t(ADVERTIZING_TYPE_SHORTENED_LOCAL_NAME, packet_data);
+								break;
+							}
+							case ADVERTIZING_TYPE_COMPLETE_LOCAL_NAME:
+							{
+								frame = new advertising_complete_local_name_t(ADVERTIZING_TYPE_COMPLETE_LOCAL_NAME, packet_data);
+								break;
+							}
+							case ADVERTIZING_TYPE_TX_POWER_LEVEL:
+							{
+								frame = new advertising_tx_power_level_t(ADVERTIZING_TYPE_TX_POWER_LEVEL, packet_data);
+								break;
+							}
+							case ADVERTIZING_TYPE_CLASS_OF_DEVICE:
+							{
+								frame = new advertising_common_t(ADVERTIZING_TYPE_CLASS_OF_DEVICE, packet_data);
+								break;
+							}
+							case ADVERTIZING_TYPE_SIMPLE_PAIRING_HASH_C:
+							{
+								frame = new advertising_common_t(ADVERTIZING_TYPE_SIMPLE_PAIRING_HASH_C, packet_data);
+								break;
+							}
+							case ADVERTIZING_TYPE_SIMPLE_PAIRING_RANDOMIZER_R:
+							{
+								frame = new advertising_common_t(ADVERTIZING_TYPE_SIMPLE_PAIRING_RANDOMIZER_R, packet_data);
+								break;
+							}
+							case ADVERTIZING_TYPE_DEVICE_ID:
+							{
+								frame = new advertising_common_t(ADVERTIZING_TYPE_DEVICE_ID, packet_data);
+								break;
+							}
+							case ADVERTIZING_TYPE_SECURITY_MANAGER_OUT_OF_BAND_FLAGS:
+							{
+								frame = new advertising_common_t(ADVERTIZING_TYPE_SECURITY_MANAGER_OUT_OF_BAND_FLAGS, packet_data);
+								break;
+							}
+							case ADVERTIZING_TYPE_SLAVE_CONNECTION_INTERVAL_RANGE:
+							{
+								frame = new advertising_common_t(ADVERTIZING_TYPE_SLAVE_CONNECTION_INTERVAL_RANGE, packet_data);
+								break;
+							}
+							case ADVERTIZING_TYPE_LIST_16BIT_SOLICITATION_UUIDS:
+							{
+								frame = new advertising_common_t(ADVERTIZING_TYPE_LIST_16BIT_SOLICITATION_UUIDS, packet_data);
+								break;
+							}
+							case ADVERTIZING_TYPE_LIST_32BIT_SOLICITATION_UUIDS:
+							{
+								frame = new advertising_common_t(ADVERTIZING_TYPE_LIST_32BIT_SOLICITATION_UUIDS, packet_data);
+								break;
+							}
+							case ADVERTIZING_TYPE_LIST_128BIT_SOLICITATION_UUIDS:
+							{
+								frame = new advertising_common_t(ADVERTIZING_TYPE_LIST_128BIT_SOLICITATION_UUIDS, packet_data);
+								break;
+							}
+							case ADVERTIZING_TYPE_SERVICE_DATA_16BIT:
+							{
+								frame = new advertising_common_t(ADVERTIZING_TYPE_SERVICE_DATA_16BIT, packet_data);
+								break;
+							}
+							case ADVERTIZING_TYPE_SERVICE_DATA_32BIT:
+							{
+								frame = new advertising_common_t(ADVERTIZING_TYPE_SERVICE_DATA_32BIT, packet_data);
+								break;
+							}
+							case ADVERTIZING_TYPE_SERVICE_DATA_128BIT:
+							{
+								frame = new advertising_common_t(ADVERTIZING_TYPE_SERVICE_DATA_128BIT, packet_data);
+								break;
+							}
+							case ADVERTIZING_TYPE_LE_SECURE_CONNECTIONS_CONFIRMATION_VALUE:
+							{
+								frame = new advertising_common_t(ADVERTIZING_TYPE_LE_SECURE_CONNECTIONS_CONFIRMATION_VALUE, packet_data);
+								break;
+							}
+							case ADVERTIZING_TYPE_LE_SECURE_CONNECTIONS_RANDOM_VALUE:
+							{
+								frame = new advertising_common_t(ADVERTIZING_TYPE_LE_SECURE_CONNECTIONS_RANDOM_VALUE, packet_data);
+								break;
+							}
+							case ADVERTIZING_TYPE_PUBLIC_TARGET_ADDRESS:
+							{
+								frame = new advertising_common_t(ADVERTIZING_TYPE_PUBLIC_TARGET_ADDRESS, packet_data);
+								break;
+							}
+							case ADVERTIZING_TYPE_RANDOM_TARGET_ADDRESS:
+							{
+								frame = new advertising_common_t(ADVERTIZING_TYPE_RANDOM_TARGET_ADDRESS, packet_data);
+								break;
+							}
+							case ADVERTIZING_TYPE_APPEARANCE:
+							{
+								frame = new advertising_common_t(ADVERTIZING_TYPE_APPEARANCE, packet_data);
+								break;
+							}
+							case ADVERTIZING_TYPE_ADVERTIZING_INTERVAL:
+							{
+								frame = new advertising_common_t(ADVERTIZING_TYPE_ADVERTIZING_INTERVAL, packet_data);
+								break;
+							}
+							case ADVERTIZING_TYPE_LE_BLUETOOTH_DEVICE_ADDRESS:
+							{
+								frame = new advertising_common_t(ADVERTIZING_TYPE_LE_BLUETOOTH_DEVICE_ADDRESS, packet_data);
+								break;
+							}
+							case ADVERTIZING_TYPE_LE_ROLE:
+							{
+								frame = new advertising_common_t(ADVERTIZING_TYPE_LE_ROLE, packet_data);
+								break;
+							}
+							case ADVERTIZING_TYPE_SIMPLE_PAIRING_HASH:
+							{
+								frame = new advertising_common_t(ADVERTIZING_TYPE_SIMPLE_PAIRING_HASH, packet_data);
+								break;
+							}
+							case ADVERTIZING_TYPE_SIMPLE_PAIRING_RANDOMIZER:
+							{
+								frame = new advertising_common_t(ADVERTIZING_TYPE_SIMPLE_PAIRING_RANDOMIZER, packet_data);
+								break;
+							}
+							case ADVERTIZING_TYPE_INFORMATION_DATA_3D:
+							{
+								frame = new advertising_common_t(ADVERTIZING_TYPE_INFORMATION_DATA_3D, packet_data);
+								break;
+							}
+							case ADVERTIZING_TYPE_MANUFACTURER_SPECIFIC_DATA:
+							{
+								frame = new advertising_manufacturer_specific_data_t(ADVERTIZING_TYPE_MANUFACTURER_SPECIFIC_DATA, packet_data);
+								break;
+							}
+							default:
+							{
+								std::cout << "[ADVERTISING PACKET NOT DECODED] : " << unsigned(packet_type) << std::endl;
+							}
+						}
+
+						if (frame!=0){
+							data_val.push_back(frame);
+						}
+					}
+				}
 			}
+			
 			report->data = data_val;
 			report->rssi = data[report->data_length + offset + 9];
 			this->ad_report_items.push_back(report);
@@ -495,8 +711,7 @@ typedef struct le_meta_connection_complete_event : public IHciEventFrame {
 	uint16_t   conn_latency;            /* 2B | Slave latency for the connection in number of connection events */
 	uint16_t   supervision_timeout;     /* 2B | Connection supervision timeout */
 	uint8_t    master_clock_accuracy;   /* 1B | */
-	LE_SUBEVENT_ENUM subevent_code;     /*subevent code*/
-
+	
 	le_meta_connection_complete_event(const std::vector<char> &data){
 		this->event_code = HCI_EVENT_LE_META;
 		this->subevent_code = HCI_EVENT_LE_CONNECTION_COMPLETE;

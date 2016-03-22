@@ -1,7 +1,7 @@
 /************************************************************************************
  * The MIT License (MIT)                                                            *
  *                                                                                  *
- * Copyright (c) 2015 Bertrand Martel                                               *
+ * Copyright (c) 2016 Bertrand Martel                                               *
  *                                                                                  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy     * 
  * of this software and associated documentation files (the "Software"), to deal    * 
@@ -132,6 +132,25 @@ const std::map< int, std::string> HCI_PACKET_TYPE_STRING_ENUM = {
 #include "hci_decoder/hci_packet_type.h"
 };
 
+#define E(x,y) x = y,
+enum ADVERTIZING_PACKET_TYPE_ENUM {
+#include "hci_decoder/advertising_packet_type.h"
+};
+
+#define E(x,y) { x,#x },
+const std::map< int, std::string> ADVERTIZING_PACKET_STRING_ENUM = {
+#include "hci_decoder/advertising_packet_type.h"
+};
+
+#define E(x,y) x = y,
+enum COMPANY_NUMBERS_ENUM {
+#include "hci_decoder/company_number.h"
+};
+
+#define E(x,y) { x,#x },
+const std::map< int, std::string> COMPANY_NUMBERS_STRING_ENUM = {
+#include "hci_decoder/company_number.h"
+};
 
 struct bt_address{
 	
