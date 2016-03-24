@@ -9,9 +9,9 @@ LOCAL_MODULE := hcidecoder
 
 HCI_DECODER_PATH := src
 
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/${HCI_DECODER_PATH}/../external_libs/include
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/${HCI_DECODER_PATH}/include
 LOCAL_C_INCLUDES += $NDK/sources/cxx-stl/gnu-libstdc++/4.8/include
-LOCAL_C_INCLUDES += $(LOCAL_PATH)/$(HCI_DECODER_PATH)
+LOCAL_C_INCLUDES += $(LOCAL_PATH)/${HCI_DECODER_PATH}/btsnoop-decoder/include
 
 LOCAL_SRC_FILES := $(HCI_DECODER_PATH)/jsoncpp.cpp \
 	$(HCI_DECODER_PATH)/hcidecoder.cpp \
