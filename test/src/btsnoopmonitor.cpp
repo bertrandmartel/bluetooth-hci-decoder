@@ -59,7 +59,7 @@ void BtSnoopMonitor::onSnoopPacketReceived(BtSnoopFileInfo fileInfo,BtSnoopPacke
 	//fileheader.printInfo();
 	HciDecoder hci_decoder;
 	IHciFrame * frame = hci_decoder.decode(packet.getPacketData());
-
+	/*
 	if (frame!=0){
 
 		if (frame->getPacketType() == HCI_TYPE_EVENT){
@@ -78,6 +78,19 @@ void BtSnoopMonitor::onSnoopPacketReceived(BtSnoopFileInfo fileInfo,BtSnoopPacke
 			}
 		}
 	}
-    //packet.printInfo();
+	*/
+	
+    //cout << packet.toJson(true) << endl;
     //cout << "_________________________" << endl;
+}
+
+
+/**
+ * @brief
+ * 		called when packet counting is completed
+ * @param packet_count
+ *      total packet count
+ */
+void BtSnoopMonitor::onFinishedCountingPackets(int packet_count){
+	cout << "finished counting packets : " << packet_count << endl;
 }

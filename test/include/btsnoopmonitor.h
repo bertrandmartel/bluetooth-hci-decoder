@@ -58,6 +58,14 @@ public:
 	 */
 	void onSnoopPacketReceived(BtSnoopFileInfo fileInfo,BtSnoopPacket packet);
 
+	/**
+	 * @brief
+	 * 		called when packet counting is completed
+	 * @param packet_count
+	 *      total packet count
+	 */
+	void onFinishedCountingPackets(int packet_count);
+
 private:
 
     HciDecoder hcidecoder;
