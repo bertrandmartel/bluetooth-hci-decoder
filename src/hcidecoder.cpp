@@ -125,6 +125,16 @@ IHciFrame* HciDecoder::decode(std::vector<char> data){
 							frame = new link_control_disconnect_cmd_t(data);
 							break;
 						}
+						case HCI_CMD_OCF_LINK_CONTROL_REMOTE_NAME_REQUEST_COMMAND:
+						{
+							frame = new link_control_remote_name_request_cmd_t(data);
+							break;
+						}
+						case HCI_CMD_OCF_LINK_CONTROL_REMOTE_NAME_REQUEST_CANCEL_COMMAND:
+						{
+							frame = new link_control_remote_name_request_cancel_cmd_t(data);
+							break;
+						}
 						default:
 						{
 							cout << "[NOT DECODED] ogf : " << unsigned(ogf) << " | ocf : " << unsigned(ocf) << endl;
@@ -408,6 +418,11 @@ IHciFrame* HciDecoder::decode(std::vector<char> data){
 							frame = new void_cmd_t(data,HCI_CMD_OGF_LE_CONTROLLER_COMMANDS,HCI_CMD_OCF_LE_READ_WHITE_LIST_SIZE_COMMAND);
 							break;
 						}
+						case HCI_CMD_OCF_LE_RAND_COMMAND:
+						{
+							frame = new void_cmd_t(data,HCI_CMD_OGF_LE_CONTROLLER_COMMANDS,HCI_CMD_OCF_LE_RAND_COMMAND);
+							break;
+						}
 						case HCI_CMD_OCF_LE_SET_ADVERTISING_DATA_COMMAND:
 						{
 							frame = new le_set_advertising_data_cmd_t(data);
@@ -461,10 +476,20 @@ IHciFrame* HciDecoder::decode(std::vector<char> data){
 					frame = new CommandComplete(data);
 					break;
 				}
+				case HCI_EVENT_REMOTE_NAME_REQUEST_COMPLETE:
+				{
+					frame = new remote_name_request_complete_event_t(data);
+					break;
+				}
 				case HCI_EVENT_DISCONNECTION_COMPLETE:
 				{
 					frame = new disconnection_complete_event_t(data);
 					break;
+				}
+				case HCI_EVENT_REMOTE_HOST_SUPPORTED_FEATURES_NOTIFICATION:
+				{
+					frame = new remote_host_supported_features_notification_event_t(data);
+					break;		
 				}
 				case HCI_EVENT_NUMBER_OF_COMPLETED_PACKET:
 				{

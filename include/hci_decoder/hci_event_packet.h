@@ -589,6 +589,91 @@ typedef struct number_of_completed_packet_event  : public IHciEventFrame{
 
 } number_of_completed_packet_event_t;
 
+/* HCI Event 0x07 : Remote name request Complete Event*/
+typedef struct remote_name_request_complete_event  : public IHciEventFrame{
+
+	uint8_t     status ;     /* 1B | 0x00 : Connection successfully completed, 0x01-0xFF : connection failure */
+	bt_address  bd_addr;     /* BD_ADDR for the device whose name was requested.*/
+	std::string remote_name; /* A UTF-8 encoded user-friendly descriptive name for the remote device.*/
+
+	remote_name_request_complete_event(const std::vector<char> &data){
+		this->event_code = HCI_EVENT_REMOTE_NAME_REQUEST_COMPLETE;
+		this->parameter_total_length = data[EVENT_FRAME_OFFSET];
+		this->status = data[EVENT_FRAME_OFFSET+1];
+
+		bd_addr.address[0]=data[EVENT_FRAME_OFFSET + 7];
+		bd_addr.address[1]=data[EVENT_FRAME_OFFSET + 6];
+		bd_addr.address[2]=data[EVENT_FRAME_OFFSET + 5];
+		bd_addr.address[3]=data[EVENT_FRAME_OFFSET + 4];
+		bd_addr.address[4]=data[EVENT_FRAME_OFFSET + 3];
+		bd_addr.address[5]=data[EVENT_FRAME_OFFSET + 2];
+
+		bool found = false;
+		for (unsigned int i = 0; i <248 && !found;i++){
+			if (data[COMMAND_FRAME_OFFSET+8+i]!='\0'){
+				remote_name+=data[COMMAND_FRAME_OFFSET+8+i];
+			}
+			else{
+				found=true;
+			}
+		}
+	}
+
+	Json::Value toJsonObj(){
+
+		Json::Value output;
+		Json::Value parameters;
+		init(output);
+		parameters["status"] =  status;
+		parameters["bd_addr"] =  bd_addr.toString();
+		parameters["remote_name"] = remote_name;
+		output["parameters"] = parameters;
+		return output;
+	}
+
+} remote_name_request_complete_event_t;
+
+/* HCI Event 0x3D : Remote Host supported features Event*/
+typedef struct remote_host_supported_features_notification_event  : public IHciEventFrame{
+
+	bt_address  bd_addr;                          /* BD_ADDR for the device whose name was requested.*/
+	std::vector<uint8_t> host_supported_features; /* Bit map of Host Supported Features page of LMP extended features.*/
+
+	remote_host_supported_features_notification_event(const std::vector<char> &data){
+		this->event_code = HCI_EVENT_REMOTE_HOST_SUPPORTED_FEATURES_NOTIFICATION;
+		this->parameter_total_length = data[EVENT_FRAME_OFFSET];
+
+		bd_addr.address[0]=data[EVENT_FRAME_OFFSET + 6];
+		bd_addr.address[1]=data[EVENT_FRAME_OFFSET + 5];
+		bd_addr.address[2]=data[EVENT_FRAME_OFFSET + 4];
+		bd_addr.address[3]=data[EVENT_FRAME_OFFSET + 3];
+		bd_addr.address[4]=data[EVENT_FRAME_OFFSET + 2];
+		bd_addr.address[5]=data[EVENT_FRAME_OFFSET + 1];
+
+		for (unsigned int i = 0;i < 8;i++){
+			host_supported_features.push_back(data[COMMAND_FRAME_OFFSET+7+i]);
+		}
+	}
+
+	Json::Value toJsonObj(){
+
+		Json::Value output;
+		Json::Value parameters;
+		init(output);
+		parameters["bd_addr"] =  bd_addr.toString();
+
+		Json::Value host_supported_features_val(Json::arrayValue);
+		for (unsigned int i = 0;i < 8;i++){
+			host_supported_features_val.append(host_supported_features[i]);
+		}
+		parameters["host_supported_features"] = host_supported_features_val;
+
+		output["parameters"] = parameters;
+		return output;
+	}
+
+} remote_host_supported_features_notification_event_t;
+
 /* HCI Event 0x05 : Disconnection Complete Event*/
 typedef struct disconnection_complete_event  : public IHciEventFrame{
 

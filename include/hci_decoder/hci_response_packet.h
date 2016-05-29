@@ -49,11 +49,48 @@ typedef struct status_response_cmd : public IHciResponseFrame {
 
 } status_response_cmd_t;
 
+/* empty response*/
+typedef struct empty_response_cmd : public IHciResponseFrame {
+
+	empty_response_cmd(const std::vector<uint8_t> &data){
+	}
+
+	Json::Value toJson(){
+		Json::Value output;
+		return output;
+	}
+
+} empty_response_cmd_t;
+
 /**********************************************************************/
 /**********************************************************************/
 /********************* LINK POLICY COMMAND ****************************/
 /**********************************************************************/
 /**********************************************************************/
+
+/*HCI Command : OGF=0x01 | OCF=0x001A remote name request cancel response Command*/
+typedef struct remote_name_request_cancel_response_cmd : public IHciResponseFrame {
+
+	bt_address  bd_addr;
+
+	remote_name_request_cancel_response_cmd(const std::vector<uint8_t> &data){
+		status = data[0];
+		bd_addr.address[0] = data[6];
+		bd_addr.address[1] = data[5];
+		bd_addr.address[2] = data[4];
+		bd_addr.address[3] = data[3];
+		bd_addr.address[4] = data[2];
+		bd_addr.address[5] = data[1];
+	}
+
+	Json::Value toJson(){
+		Json::Value output;
+		output["status"] = status;
+		output["bd_addr"] = bd_addr.toString();
+		return output;
+	}
+
+} remote_name_request_cancel_response_cmd_t;
 
 /**********************************************************************/
 /**********************************************************************/
@@ -222,6 +259,33 @@ typedef struct le_read_white_list_response_cmd : public IHciResponseFrame {
 	}
 
 } le_read_white_list_response_cmd_t;
+
+
+/*HCI Command : OGF=0x08 | OCF=0x0018 LE Rand Command*/
+typedef struct le_rand_response_cmd : public IHciResponseFrame {
+
+	std::vector<uint8_t> random_number; /*Random Number*/
+
+	le_rand_response_cmd(const std::vector<uint8_t> &data){
+		status = data[0];
+		for (unsigned int i = 0; i < 8;i++){
+			random_number.push_back(data[1+i]);
+		}
+	}
+
+	Json::Value toJson(){
+		Json::Value output;
+		output["status"] = status;
+		Json::Value random_number_val(Json::arrayValue);
+
+		for (unsigned int i = 0; i < 8;i++){
+			random_number_val.append(random_number[i]);
+		}
+		output["random_number"] = random_number_val;
+		return output;
+	}
+
+} le_rand_response_cmd_t;
 
 /*HCI Command : OGF=0x08 | OCF=0x0002 LE Read Buffer Size Command*/
 typedef struct le_read_buffer_size_response_cmd : public IHciResponseFrame {

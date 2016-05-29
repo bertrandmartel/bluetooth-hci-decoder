@@ -28,11 +28,13 @@
 	@author Bertrand Martel
 	@version 1.0
 */
-E(HCI_EVENT_DISCONNECTION_COMPLETE      , 0x05 )
-E(HCI_EVENT_NUMBER_OF_COMPLETED_PACKET  , 0x13 )
-E(HCI_EVENT_COMMAND_COMPLETE            , 0x0E )
-E(HCI_EVENT_EXTENDED_INQUIRY_RESULT     , 0x2F )
-E(HCI_EVENT_INQUIRY_COMPLETE            , 0x01 )
-E(HCI_EVENT_COMMAND_STATUS              , 0x0F )
-E(HCI_EVENT_LE_META                     , 0x3E )
+E(HCI_EVENT_DISCONNECTION_COMPLETE                      , 0x05 )
+E(HCI_EVENT_REMOTE_NAME_REQUEST_COMPLETE                , 0x07 )
+E(HCI_EVENT_NUMBER_OF_COMPLETED_PACKET                  , 0x13 )
+E(HCI_EVENT_COMMAND_COMPLETE                            , 0x0E )
+E(HCI_EVENT_EXTENDED_INQUIRY_RESULT                     , 0x2F )
+E(HCI_EVENT_INQUIRY_COMPLETE                            , 0x01 )
+E(HCI_EVENT_COMMAND_STATUS                              , 0x0F )
+E(HCI_EVENT_REMOTE_HOST_SUPPORTED_FEATURES_NOTIFICATION , 0x3D )
+E(HCI_EVENT_LE_META                                     , 0x3E )
 #undef E

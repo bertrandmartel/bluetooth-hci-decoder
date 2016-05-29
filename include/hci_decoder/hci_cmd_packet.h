@@ -106,7 +106,6 @@ typedef struct link_control_disconnect_cmd : public IHciCommandFrame {
 		this->reason = data[COMMAND_FRAME_OFFSET +3];
 	}
 
-
 	Json::Value toJsonObj(){
 		Json::Value output;
 		init(output);
@@ -120,6 +119,78 @@ typedef struct link_control_disconnect_cmd : public IHciCommandFrame {
 	};
 
 } link_control_disconnect_cmd_t;
+
+/*HCI Command : OGF=0x01 | OCF=0x0019 Remote name request Command*/
+typedef struct link_control_remote_name_request_cmd : public IHciCommandFrame {
+
+	bt_address bd_addr;         /* 6B | BD_ADDR for the device whose name is requested. */
+	uint8_t page_scan_repetition_mode; /* 1B : 0x00 R0 | 0x01 R1 | 0x02 R2 */
+	uint8_t reserved;                  /* 1B : 0x00*/
+	uint16_t clock_offset;             /* 2B : bt14-0 => Bits 16-2 of CLKNslave-CLK | bit 15 : Clock_Offset_Valid_Flag,Invalid Clock Offset = 0,Valid Clock Offset = 1*/
+
+	link_control_remote_name_request_cmd(const std::vector<char> &data){
+		this->ogf = HCI_CMD_OGF_LINK_CONTROL_COMMANDS;
+		this->ocf = HCI_CMD_OCF_LINK_CONTROL_REMOTE_NAME_REQUEST_COMMAND;
+		parameter_total_length = data[COMMAND_FRAME_OFFSET];
+
+		this->bd_addr.address[0]=data[COMMAND_FRAME_OFFSET+6];
+		this->bd_addr.address[1]=data[COMMAND_FRAME_OFFSET+5];
+		this->bd_addr.address[2]=data[COMMAND_FRAME_OFFSET+4];
+		this->bd_addr.address[3]=data[COMMAND_FRAME_OFFSET+3];
+		this->bd_addr.address[4]=data[COMMAND_FRAME_OFFSET+2];
+		this->bd_addr.address[5]=data[COMMAND_FRAME_OFFSET+1];
+
+		page_scan_repetition_mode=data[COMMAND_FRAME_OFFSET+7];
+		reserved=data[COMMAND_FRAME_OFFSET+8];
+		this->clock_offset = data[COMMAND_FRAME_OFFSET+9] + (data[COMMAND_FRAME_OFFSET+10]<<8);
+	}
+
+	Json::Value toJsonObj(){
+		Json::Value output;
+		init(output);
+
+		Json::Value parameters;
+		parameters["bd_addr"] = bd_addr.toString();
+		parameters["page_scan_repetition_mode"] = page_scan_repetition_mode;
+		parameters["reserved"] = reserved;
+		parameters["clock_offset"] = clock_offset;
+		output["parameters"] = parameters;
+
+		return output;
+	};
+
+} link_control_remote_name_request_cmd_t;
+
+/*HCI Command : OGF=0x01 | OCF=0x001A Remote name request Cancel Command*/
+typedef struct link_control_remote_name_request_cancel_cmd : public IHciCommandFrame {
+
+	bt_address bd_addr;         /* 6B | BD_ADDR for the device whose name is requested. */
+	
+	link_control_remote_name_request_cancel_cmd(const std::vector<char> &data){
+		this->ogf = HCI_CMD_OGF_LINK_CONTROL_COMMANDS;
+		this->ocf = HCI_CMD_OCF_LINK_CONTROL_REMOTE_NAME_REQUEST_CANCEL_COMMAND;
+		parameter_total_length = data[COMMAND_FRAME_OFFSET];
+
+		this->bd_addr.address[0]=data[COMMAND_FRAME_OFFSET+6];
+		this->bd_addr.address[1]=data[COMMAND_FRAME_OFFSET+5];
+		this->bd_addr.address[2]=data[COMMAND_FRAME_OFFSET+4];
+		this->bd_addr.address[3]=data[COMMAND_FRAME_OFFSET+3];
+		this->bd_addr.address[4]=data[COMMAND_FRAME_OFFSET+2];
+		this->bd_addr.address[5]=data[COMMAND_FRAME_OFFSET+1];
+	}
+
+	Json::Value toJsonObj(){
+		Json::Value output;
+		init(output);
+
+		Json::Value parameters;
+		parameters["bd_addr"] = bd_addr.toString();
+		output["parameters"] = parameters;
+
+		return output;
+	};
+
+} link_control_remote_name_request_cancel_cmd_t;
 
 /*HCI Command : OGF=0x01 | OCF=0x0001 Inquiry Command*/
 typedef struct link_control_inquiry_cmd : public IHciCommandFrame {
@@ -136,7 +207,6 @@ typedef struct link_control_inquiry_cmd : public IHciCommandFrame {
 		inquiry_length = data[COMMAND_FRAME_OFFSET + 2 ];
 		num_responses = data[COMMAND_FRAME_OFFSET + 3 ];
 	}
-
 
 	Json::Value toJsonObj(){
 		Json::Value output;
@@ -170,7 +240,6 @@ typedef struct le_read_remote_used_features_cmd : public IHciCommandFrame {
 		parameter_total_length = data[COMMAND_FRAME_OFFSET];
 		this->connection_handle = data[COMMAND_FRAME_OFFSET+1] + (data[COMMAND_FRAME_OFFSET+2]<<8);
 	}
-
 
 	Json::Value toJsonObj(){
 		Json::Value output;

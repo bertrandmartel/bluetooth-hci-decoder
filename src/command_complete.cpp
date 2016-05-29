@@ -60,9 +60,19 @@ CommandComplete::CommandComplete(const std::vector<char> &data){
 			{
 				switch (ocf_ret)
 				{
+					case HCI_CMD_OCF_LINK_CONTROL_INQUIRY_COMMAND:
+					{
+						response_frame = new empty_response_cmd(return_parameters);
+						break;	
+					}
 					case HCI_CMD_OCF_LINK_CONTROL_INQUIRY_CANCEL_COMMAND:
 					{
 						response_frame = new status_response_cmd(return_parameters);
+						break;
+					}
+					case HCI_CMD_OCF_LINK_CONTROL_REMOTE_NAME_REQUEST_CANCEL_COMMAND:
+					{
+						response_frame = new remote_name_request_cancel_response_cmd(return_parameters);
 						break;
 					}
 					default:
@@ -337,6 +347,11 @@ CommandComplete::CommandComplete(const std::vector<char> &data){
 					case HCI_CMD_OCF_LE_READ_WHITE_LIST_SIZE_COMMAND:
 					{
 						response_frame = new le_read_white_list_response_cmd_t(return_parameters);
+						break;
+					}
+					case HCI_CMD_OCF_LE_RAND_COMMAND:
+					{
+						response_frame = new le_rand_response_cmd_t(return_parameters);
 						break;
 					}
 					case HCI_CMD_OCF_LE_SET_ADVERTISING_DATA_COMMAND:
