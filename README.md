@@ -1,7 +1,7 @@
 # Bluetooth HCI decoder library #
 
-[![Build Status](https://travis-ci.org/akinaru/bluetooth-hci-decoder.svg?branch=master)](https://travis-ci.org/akinaru/bluetooth-hci-decoder)
-[![Download](https://api.bintray.com/packages/akinaru/generic/bluetooth-hci-decoder/images/download.svg) ](https://bintray.com/akinaru/generic/bluetooth-hci-decoder/_latestVersion)
+[![Build Status](https://travis-ci.org/bertrandmartel/bluetooth-hci-decoder.svg?branch=master)](https://travis-ci.org/bertrandmartel/bluetooth-hci-decoder)
+[![Download](https://api.bintray.com/packages/bertrandmartel/generic/bluetooth-hci-decoder/images/download.svg) ](https://bintray.com/bertrandmartel/generic/bluetooth-hci-decoder/_latestVersion)
 [![License](http://img.shields.io/:license-mit-blue.svg)](LICENSE.md)
 
 Lightweight Bluetooth HCI decoder library parsing individually HCI frames into JSON format
@@ -10,7 +10,7 @@ Lightweight Bluetooth HCI decoder library parsing individually HCI frames into J
 
 ## Documentation
 
-http://akinaru.github.io/bluetooth-hci-decoder
+http://bertrandmartel.github.io/bluetooth-hci-decoder
 
 ## Setup & Build
 
@@ -25,7 +25,7 @@ library release is located under `lib` directory.
 
 ## Test
 
-A small test program is provided extracting HCI frames from a btsnoop file decoded with https://github.com/akinaru/btsnoop-decoder
+A small test program is provided extracting HCI frames from a btsnoop file decoded with https://github.com/bertrandmartel/btsnoop-decoder
 
 Syntax : ``./bthci-test <btsnoop_file>``
 
@@ -443,7 +443,7 @@ An example using HCI decoder library is provided in `android-example` directory.
 
 This example will decode a snoop file extracted from raw directory, parse all HCI frames in it and display results on the screen
 
-An update of submodule of https://github.com/akinaru/btsnoop-decoder is needed to retrieve source of btsnoop decoder project. Make sure you have done a `git submodule update` before
+An update of submodule of https://github.com/bertrandmartel/btsnoop-decoder is needed to retrieve source of btsnoop decoder project. Make sure you have done a `git submodule update` before
 
 This is an Android Studio project which can be built with gradle :
 
@@ -467,7 +467,7 @@ LOCAL_C_INCLUDES := $NDK/sources/cxx-stl/gnu-libstdc++/4.8/include
 ##External library
 
 * json encoding with jsonccp : https://github.com/open-source-parsers/jsoncpp
-* for testing HCI library, bluetooth snoop decoder : https://github.com/akinaru/btsnoop-decoder
+* for testing HCI library, bluetooth snoop decoder : https://github.com/bertrandmartel/btsnoop-decoder
 
 ##Specifications
 
