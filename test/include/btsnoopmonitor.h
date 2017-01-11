@@ -66,6 +66,16 @@ public:
 	 */
 	void onFinishedCountingPackets(int packet_count);
 
+	/**
+	 * @brief
+	 * 		called when and error occured
+	 * @param error_code
+	 *      error code
+	 * @param error_message
+	 *      error message
+	 */
+	void onError(int error_code, std::string error_message);
+
 private:
 
     HciDecoder hcidecoder;
